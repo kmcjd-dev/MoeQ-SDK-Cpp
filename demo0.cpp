@@ -327,7 +327,7 @@ int __stdcall _OnEventNT(EventMsgDataNT* pData)
 	{
 		// data.frameworkQQ 框架QQ
 		// data.groupID 消息群号
-		// data.timestamp 修改时间(他原版写的是修改世界)
+		// data.timestamp 修改时间
 		// data.groupName 消息群名称
 		// data.triggerNick 修改名片的QQ昵称
 		// data.triggerQQ  修改名片的QQ
@@ -389,3 +389,4 @@ extern "C"
 	}
 
 }
+
