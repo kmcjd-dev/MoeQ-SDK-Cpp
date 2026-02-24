@@ -1,10 +1,10 @@
-#include "AppInfoNT.h"
-#include "cornNT.h"
-#include "SDKconstants.h"
-#include "types.h"
+#include "include/AppInfoNT.h"
+#include "include/cornNT.h"
+#include "include/SDKconstants.h"
+#include "include/types.h"
 #include <thread>
 #include <chrono>
-// #include <windows.h> // Èç¹ûÊ¹ÓÃWindows SDKÇëÈ¡Ïû×¢ÊÍ´ËĞĞ(Ê¹ÓÃÁËMFCÎŞĞèÈ¡Ïû×¢ÊÍ)
+// #include <windows.h> // å¦‚æœä½¿ç”¨Windows SDKè¯·å–æ¶ˆæ³¨é‡Šæ­¤è¡Œ(ä½¿ç”¨äº†MFCæ— éœ€å–æ¶ˆæ³¨é‡Š)
 
 #pragma comment(linker, "/EXPORT:_NT@8=_NTinit@8")
 #pragma comment(linker, "/EXPORT:_apprunNT@8=_NTinit@8")
@@ -13,43 +13,43 @@
 
 cornNT Api;
 
-// ²å¼ş²Ëµ¥´¦Àíº¯Êı
+// æ’ä»¶èœå•å¤„ç†å‡½æ•°
 int __stdcall _ControlPanelNT()
 {
-	// ½¨Òé¿ªÆôGUI²Ëµ¥
+	// å»ºè®®å¼€å¯GUIèœå•
 
 
 
 	return MQ::Ignore;
 }
 
-// ±»ÆôÓÃ´¦Àíº¯Êı
+// è¢«å¯ç”¨å¤„ç†å‡½æ•°
 int __stdcall _AppStartNT()
 {
 	return MQ::Ignore;
 }
 
-// ±»½ûÓÃ´¦Àíº¯Êı ¸Ãº¯ÊıÏÂÎŞ·¨Ê¹ÓÃ¿ò¼ÜApi
+// è¢«ç¦ç”¨å¤„ç†å‡½æ•° è¯¥å‡½æ•°ä¸‹æ— æ³•ä½¿ç”¨æ¡†æ¶Api
 int __stdcall _AppEndNT()
 {
 	return MQ::Ignore;
 }
 
-// ½«±»Ğ¶ÔØ´¦Àíº¯Êı ¸Ãº¯ÊıÏÂÎŞ·¨Ê¹ÓÃ¿ò¼ÜApi
+// å°†è¢«å¸è½½å¤„ç†å‡½æ•° è¯¥å‡½æ•°ä¸‹æ— æ³•ä½¿ç”¨æ¡†æ¶Api
 int __stdcall _AppUnloadNT()
 {
 	return MQ::Ignore;
 }
 
-// Ë½ÁÄÏûÏ¢´¦Àíº¯Êı
+// ç§èŠæ¶ˆæ¯å¤„ç†å‡½æ•°
 int __stdcall _OnPrivateNT(PrivateMsgDataNT* pData)
 {
 	if (!pData) return MQ::Ignore;
 
 	PrivateMsgDataNT data = *pData;
 
-	// ÔÚ´Ë´¦Ìí¼ÓÏûÏ¢´¦ÀíÁ÷³Ì
-	if (data.senderQQ == data.frameworkQQ) // ¹ıÂË×Ô¼ºµÄÏûÏ¢(¿ÉÑ¡)
+	// åœ¨æ­¤å¤„æ·»åŠ æ¶ˆæ¯å¤„ç†æµç¨‹
+	if (data.senderQQ == data.frameworkQQ) // è¿‡æ»¤è‡ªå·±çš„æ¶ˆæ¯(å¯é€‰)
 	{
 		return MQ::Ignore;
 	}
@@ -59,15 +59,15 @@ int __stdcall _OnPrivateNT(PrivateMsgDataNT* pData)
 	return MQ::Ignore;
 }
 
-// ÈºÁÄÏûÏ¢´¦Àíº¯Êı
+// ç¾¤èŠæ¶ˆæ¯å¤„ç†å‡½æ•°
 int __stdcall _OnGroupNT(GroupMsgDataNT* pData)
 {
 	if (!pData) return MQ::Ignore;
 
 	GroupMsgDataNT data = *pData;
 
-	// ÔÚ´Ë´¦Ìí¼ÓÏûÏ¢´¦ÀíÁ÷³Ì
-	if (data.senderQQ == data.frameworkQQ) // ¹ıÂË×Ô¼ºµÄÏûÏ¢(¿ÉÑ¡)
+	// åœ¨æ­¤å¤„æ·»åŠ æ¶ˆæ¯å¤„ç†æµç¨‹
+	if (data.senderQQ == data.frameworkQQ) // è¿‡æ»¤è‡ªå·±çš„æ¶ˆæ¯(å¯é€‰)
 	{
 		return MQ::Ignore;
 	}
@@ -77,21 +77,21 @@ int __stdcall _OnGroupNT(GroupMsgDataNT* pData)
 	return MQ::Ignore;
 }
 
-// ²å¼şÓû·¢ËÍÏûÏ¢ÄÚÈİ´¦Àíº¯Êı
+// æ’ä»¶æ¬²å‘é€æ¶ˆæ¯å†…å®¹å¤„ç†å‡½æ•°
 const char* __stdcall _OnPluginMessageNT(PluginSendMsgDataNT* pData)
 {
 	if (!pData) return "";
 
 	PluginSendMsgDataNT data = *pData;
 
-	// ÔÚ´Ë´¦Ìí¼ÓÏûÏ¢´¦ÀíÁ÷³Ì
+	// åœ¨æ­¤å¤„æ·»åŠ æ¶ˆæ¯å¤„ç†æµç¨‹
 
 
 
-	return data.content; // Ä¬ÈÏ²»´¦Àí£¬·µ»ØÔ­ÄÚÈİ
+	return data.content; // é»˜è®¤ä¸å¤„ç†ï¼Œè¿”å›åŸå†…å®¹
 }
 
-// ÊÂ¼şÏûÏ¢´¦Àíº¯Êı
+// äº‹ä»¶æ¶ˆæ¯å¤„ç†å‡½æ•°
 int __stdcall _OnEventNT(EventMsgDataNT* pData)
 {
 	if (!pData) return MQ::Ignore;
@@ -100,22 +100,22 @@ int __stdcall _OnEventNT(EventMsgDataNT* pData)
 
 	if (data.msgType == MQ::Group_FileUploaded)
 	{
-		// ¸ÃÊÂ¼ş½öÔÚÃÈQNT¿ò¼ÜÉÏ£¬ÇÒÄúÊÇÊ¹ÓÃCatÊ±ÓĞĞ§£¡
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.operatorQQ ÎÄ¼ş·¢ËÍÈËµÄQQ
-		// data.triggerQQ ´Ë²ÎÊı¿Õ
-		// data.msgSeq ´Ë²ÎÊı¿Õ
-		// data.timestamp ÏûÏ¢½ÓÊÕÊ±¼ä
-		// data.groupName À´Ô´ÈºÃû³Æ
-		// data.operatorNick ·¢ÎÄ¼şµÄÈËµÄQÃû
-		// data.triggerNick ´Ë²ÎÊı´«µİÎÄ¼şÃû
-		// data.content ´Ë´«µİÎÄ¼şID£¬¿ÉÒÔÊ¹ÓÃAPI:»ñÈ¡ÎÄ¼şĞÅÏ¢(Êı¾İ.ÏûÏ¢ÄÚÈİ )»ñÈ¡ÎÄ¼şÏêÏ¸ĞÅÏ¢
-		// data.msgSubType ¹Ì¶¨Îª1£¬²»ÓÃ¹Ü
-		// data.msgFlag  ´Ë²ÎÊı´«µİÎÄ¼ş´óĞ¡£¬µ¥Î»ÎªKB
+		// è¯¥äº‹ä»¶ä»…åœ¨èŒQNTæ¡†æ¶ä¸Šï¼Œä¸”æ‚¨æ˜¯ä½¿ç”¨Catæ—¶æœ‰æ•ˆï¼
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.operatorQQ æ–‡ä»¶å‘é€äººçš„QQ
+		// data.triggerQQ æ­¤å‚æ•°ç©º
+		// data.msgSeq æ­¤å‚æ•°ç©º
+		// data.timestamp æ¶ˆæ¯æ¥æ”¶æ—¶é—´
+		// data.groupName æ¥æºç¾¤åç§°
+		// data.operatorNick å‘æ–‡ä»¶çš„äººçš„Qå
+		// data.triggerNick æ­¤å‚æ•°ä¼ é€’æ–‡ä»¶å
+		// data.content æ­¤ä¼ é€’æ–‡ä»¶IDï¼Œå¯ä»¥ä½¿ç”¨API:è·å–æ–‡ä»¶ä¿¡æ¯(æ•°æ®.æ¶ˆæ¯å†…å®¹ )è·å–æ–‡ä»¶è¯¦ç»†ä¿¡æ¯
+		// data.msgSubType å›ºå®šä¸º1ï¼Œä¸ç”¨ç®¡
+		// data.msgFlag  æ­¤å‚æ•°ä¼ é€’æ–‡ä»¶å¤§å°ï¼Œå•ä½ä¸ºKB
 
 		// const char* ret = Api.GetFileInfo(data.frameworkQQ, data.content);
-		// Api.OutputLog((std::string("ÏûÏ¢ÄÚÈİ:") + data.content).c_str());
-		// Api.OutputLog((std::string("»ñÈ¡½á¹û:") + ret).c_str());
+		// Api.OutputLog((std::string("æ¶ˆæ¯å†…å®¹:") + data.content).c_str());
+		// Api.OutputLog((std::string("è·å–ç»“æœ:") + ret).c_str());
 
 		return MQ::Ignore;
 	}
@@ -145,214 +145,214 @@ int __stdcall _OnEventNT(EventMsgDataNT* pData)
 
 	if (data.msgType == MQ::Friend_NewFriend)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.triggerQQ ĞÂºÃÓÑµÄQQ
-		// data.timestamp ÏÖÔÚµÄÊ±¼ä
-		// data.triggerNick ĞÂºÃÓÑµÄêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.triggerQQ æ–°å¥½å‹çš„QQ
+		// data.timestamp ç°åœ¨çš„æ—¶é—´
+		// data.triggerNick æ–°å¥½å‹çš„æ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Friend_FriendRequest)
 	{
-		// data.frameworQQ ¿ò¼ÜQQ
-		// data.triggerQQ ¶Ô·½QQ
-		// data.triggerNick ¶Ô·½QQêÇ³Æ
-		// data.msgSubType Îª1£º±»Ìí¼ÓÎªµ¥ÏòºÃÓÑ,Îª2£ºÇëÇóÌí¼ÓÎªºÃÓÑ
-		// data.content ÑéÖ¤ÏûÏ¢
+		// data.frameworQQ æ¡†æ¶QQ
+		// data.triggerQQ å¯¹æ–¹QQ
+		// data.triggerNick å¯¹æ–¹QQæ˜µç§°
+		// data.msgSubType ä¸º1ï¼šè¢«æ·»åŠ ä¸ºå•å‘å¥½å‹,ä¸º2ï¼šè¯·æ±‚æ·»åŠ ä¸ºå¥½å‹
+		// data.content éªŒè¯æ¶ˆæ¯
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Friend_Recall)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.triggerQQ  ³·»ØÕßQQ
-		// data.msgSeq  ¿ÉÓÃÓÚÈ¡»º´æÏûÏ¢
-		// data.timestamp ³·»ØÏûÏ¢·¢ËÍÊ±¼ä
-		// data.triggerNick ³·»ØÕßQQêÇ³Æ
-		// data.content ³·»ØÏûÏ¢ÄÚÈİ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.triggerQQ  æ’¤å›è€…QQ
+		// data.msgSeq  å¯ç”¨äºå–ç¼“å­˜æ¶ˆæ¯
+		// data.timestamp æ’¤å›æ¶ˆæ¯å‘é€æ—¶é—´
+		// data.triggerNick æ’¤å›è€…QQæ˜µç§°
+		// data.content æ’¤å›æ¶ˆæ¯å†…å®¹
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberRecall)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.operatorQQ  ³·»ØÏûÏ¢µÄQQ
-		// data.groupID  ÏûÏ¢³·»ØµÄÈº
-		// data.groupName  ÏûÏ¢³·»ØµÄÈºÃû
-		// data.timestamp ÏÖÔÚµÄÊ±¼ä
-		// data.operatorNick ³·»ØÏûÏ¢QQµÄêÇ³Æ
-		// data.content ³·»ØÏûÏ¢µÄÄÚÈİ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.operatorQQ  æ’¤å›æ¶ˆæ¯çš„QQ
+		// data.groupID  æ¶ˆæ¯æ’¤å›çš„ç¾¤
+		// data.groupName  æ¶ˆæ¯æ’¤å›çš„ç¾¤å
+		// data.timestamp ç°åœ¨çš„æ—¶é—´
+		// data.operatorNick æ’¤å›æ¶ˆæ¯QQçš„æ˜µç§°
+		// data.content æ’¤å›æ¶ˆæ¯çš„å†…å®¹
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberBanned)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÊÂ¼şÈººÅ
-		// data.operatorQQ ½ûÑÔÕßQQ
-		// data.triggerQQ ±»½ûÕßQQ
-		// data.msgSeq ±»½ûÃëÊı
-		// data.timestamp ±»½ûÊ±¼ä
-		// data.groupName ÊÂ¼şÈºÃû
-		// data.operatorNick ½ûÑÔÕßQQêÇ³Æ
-		// data.triggerNick ±»½ûÕßQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID äº‹ä»¶ç¾¤å·
+		// data.operatorQQ ç¦è¨€è€…QQ
+		// data.triggerQQ è¢«ç¦è€…QQ
+		// data.msgSeq è¢«ç¦ç§’æ•°
+		// data.timestamp è¢«ç¦æ—¶é—´
+		// data.groupName äº‹ä»¶ç¾¤å
+		// data.operatorNick ç¦è¨€è€…QQæ˜µç§°
+		// data.triggerNick è¢«ç¦è€…QQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberUnbanned)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÊÂ¼şÈººÅ
-		// data.operatorQQ ½â³ıÕßQQ
-		// data.triggerQQ ±»½â³ıÕßQQ(Ê×¸ö)
-		// data.timestamp ±»½â³ıÊ±¼ä
-		// data.groupName ÊÂ¼şÈºÃû
-		// data.operatorNick ½â³ıÕßQQêÇ³Æ
-		// data.triggerNick ±»½â³ıÕßQQêÇ³Æ(Ê×¸ö)
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID äº‹ä»¶ç¾¤å·
+		// data.operatorQQ è§£é™¤è€…QQ
+		// data.triggerQQ è¢«è§£é™¤è€…QQ(é¦–ä¸ª)
+		// data.timestamp è¢«è§£é™¤æ—¶é—´
+		// data.groupName äº‹ä»¶ç¾¤å
+		// data.operatorNick è§£é™¤è€…QQæ˜µç§°
+		// data.triggerNick è¢«è§£é™¤è€…QQæ˜µç§°(é¦–ä¸ª)
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_AdminRemoved)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ·¢ÉúÈººÅ
-		// data.triggerQQ  ±»È¡ÏûÕßQQ
-		// data.timestamp  È¡ÏûÊ±¼ä
-		// data.groupName ·¢ÉúÈºÃû
-		// data.triggerNick ±»È¡ÏûÕßQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID å‘ç”Ÿç¾¤å·
+		// data.triggerQQ  è¢«å–æ¶ˆè€…QQ
+		// data.timestamp  å–æ¶ˆæ—¶é—´
+		// data.groupName å‘ç”Ÿç¾¤å
+		// data.triggerNick è¢«å–æ¶ˆè€…QQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_AdminAdded)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ·¢ÉúÈººÅ
-		// data.triggerQQ  ±»¸³ÓèÕßQQ
-		// data.timestamp  È¡ÏûÊ±¼ä
-		// data.groupName ·¢ÉúÈºÃû
-		// data.triggerNick ±»¸³ÓèÕßQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID å‘ç”Ÿç¾¤å·
+		// data.triggerQQ  è¢«èµ‹äºˆè€…QQ
+		// data.timestamp  å–æ¶ˆæ—¶é—´
+		// data.groupName å‘ç”Ÿç¾¤å
+		// data.triggerNick è¢«èµ‹äºˆè€…QQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_GlobalBannedOn)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÆôÓÃÈººÅ
-		// data.operatorQQ ¿ªÆôÈËQQ
-		// data.timestamp  ¿ªÆôÊ±¼ä
-		// data.groupName ÆôÓÃÈºÃû³Æ
-		// data.operatorNick ¿ªÆôÈËQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID å¯ç”¨ç¾¤å·
+		// data.operatorQQ å¼€å¯äººQQ
+		// data.timestamp  å¼€å¯æ—¶é—´
+		// data.groupName å¯ç”¨ç¾¤åç§°
+		// data.operatorNick å¼€å¯äººQQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_GlobalBannedOff)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ¹Ø±ÕÈººÅ
-		// data.operatorQQ ¹Ø±ÕÈËQQ
-		// data.timestamp  ¹Ø±ÕÊ±¼ä
-		// data.groupName ¹Ø±ÕÈºÃû³Æ
-		// data.operatorNick ¹Ø±ÕÈËQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID å…³é—­ç¾¤å·
+		// data.operatorQQ å…³é—­äººQQ
+		// data.timestamp  å…³é—­æ—¶é—´
+		// data.groupName å…³é—­ç¾¤åç§°
+		// data.operatorNick å…³é—­äººQQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_SelfInvited)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ±»ÑûÈººÅ
-		// data.operatorQQ ÑûÇëÕßQQ
-		// data.msgSeq   ´¦ÀíËùĞèSeq
-		// data.timestamp ÑûÇëÊ±¼ä
-		// data.groupName ±»ÑûÈºÃû³Æ
-		// data.operatorNick ÑûÇëÕßQQêÇ³Æ
-		// data.triggerNick ±¾ÈËêÇ³Æ
-		// data.triggerQQ  ÑûÇëÕßQQ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID è¢«é‚€ç¾¤å·
+		// data.operatorQQ é‚€è¯·è€…QQ
+		// data.msgSeq   å¤„ç†æ‰€éœ€Seq
+		// data.timestamp é‚€è¯·æ—¶é—´
+		// data.groupName è¢«é‚€ç¾¤åç§°
+		// data.operatorNick é‚€è¯·è€…QQæ˜µç§°
+		// data.triggerNick æœ¬äººæ˜µç§°
+		// data.triggerQQ  é‚€è¯·è€…QQ
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberApplying)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ±»ÉêÈººÅ
-		// data.operatorQQ ÑûÇëÕßQQ
-		// data.msgSeq ²Ù×÷ËùĞèSeq
-		// data.timestamp ÉêÇëÊ±¼ä
-		// data.groupName ±»ÉêÈºÃû³Æ
-		// data.operatorNick ÑûÇëÕßQQêÇ³Æ
-		// data.triggerNick ½øÈºÕßQQêÇ³Æ
-		// data.triggerQQ  ½øÈºÕßQQ
-		// data.content Îª£ºÑéÖ¤ÏûÏ¢ ¼ÓÉÏ ¼ÓÈºÀ´Ô´,¸ñÊ½Îª£ºÑéÖ¤ÏûÏ¢[¼ÓÈºÀ´Ô´:xxx],Èç¹û¼ÓÈºÕßQQ´æÔÚ·çÏÕ±»ÌÚÑ¶¹ıÂË,ÄÇÃ´½«¼ÓÉÏ[¸ÃÕÊºÅ´æÔÚ·çÏÕ£¬Çë½÷É÷²Ù×÷]ºó×º,ÑéÖ¤ÏûÏ¢ÄÚµÄ[¡¢]½«±»×ªÒå
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID è¢«ç”³ç¾¤å·
+		// data.operatorQQ é‚€è¯·è€…QQ
+		// data.msgSeq æ“ä½œæ‰€éœ€Seq
+		// data.timestamp ç”³è¯·æ—¶é—´
+		// data.groupName è¢«ç”³ç¾¤åç§°
+		// data.operatorNick é‚€è¯·è€…QQæ˜µç§°
+		// data.triggerNick è¿›ç¾¤è€…QQæ˜µç§°
+		// data.triggerQQ  è¿›ç¾¤è€…QQ
+		// data.content ä¸ºï¼šéªŒè¯æ¶ˆæ¯ åŠ ä¸Š åŠ ç¾¤æ¥æº,æ ¼å¼ä¸ºï¼šéªŒè¯æ¶ˆæ¯[åŠ ç¾¤æ¥æº:xxx],å¦‚æœåŠ ç¾¤è€…QQå­˜åœ¨é£é™©è¢«è…¾è®¯è¿‡æ»¤,é‚£ä¹ˆå°†åŠ ä¸Š[è¯¥å¸å·å­˜åœ¨é£é™©ï¼Œè¯·è°¨æ…æ“ä½œ]åç¼€,éªŒè¯æ¶ˆæ¯å†…çš„[ã€]å°†è¢«è½¬ä¹‰
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberQuit)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÍË³öµÄÈººÅ
-		// data.timestamp ÍËÈºÊ±¼ä
-		// data.groupName ÍË³öµÄÈºÃû³Æ
-		// data.triggerNick ÍËÈºÕßQQêÇ³Æ
-		// data.triggerQQ  ÍËÈºÕßQQ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID é€€å‡ºçš„ç¾¤å·
+		// data.timestamp é€€ç¾¤æ—¶é—´
+		// data.groupName é€€å‡ºçš„ç¾¤åç§°
+		// data.triggerNick é€€ç¾¤è€…QQæ˜µç§°
+		// data.triggerQQ  é€€ç¾¤è€…QQ
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_MemberKicked)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÉÙÈËÈººÅ
-		// data.timestamp ±»ÌßÊ±¼ä
-		// data.groupName ÉÙÈËÈºÃû³Æ
-		// data.triggerNick ±»ÌßÕßQQêÇ³Æ
-		// data.triggerQQ  ±»ÌßÕßQQ
-		// data.operatorQQ ÌßÈËQQ
-		// data.operatorNick ÌßÈËQQêÇ³Æ
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID å°‘äººç¾¤å·
+		// data.timestamp è¢«è¸¢æ—¶é—´
+		// data.groupName å°‘äººç¾¤åç§°
+		// data.triggerNick è¢«è¸¢è€…QQæ˜µç§°
+		// data.triggerQQ  è¢«è¸¢è€…QQ
+		// data.operatorQQ è¸¢äººQQ
+		// data.operatorNick è¸¢äººQQæ˜µç§°
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Group_ModifyCard)
 	{
-		// data.frameworkQQ ¿ò¼ÜQQ
-		// data.groupID ÏûÏ¢ÈººÅ
-		// data.timestamp ĞŞ¸ÄÊ±¼ä(ËûÔ­°æĞ´µÄÊÇĞŞ¸ÄÊÀ½ç)
-		// data.groupName ÏûÏ¢ÈºÃû³Æ
-		// data.triggerNick ĞŞ¸ÄÃûÆ¬µÄQQêÇ³Æ
-		// data.triggerQQ  ĞŞ¸ÄÃûÆ¬µÄQQ
-		// data.content ĞŞ¸ÄºóµÄÃûÆ¬
+		// data.frameworkQQ æ¡†æ¶QQ
+		// data.groupID æ¶ˆæ¯ç¾¤å·
+		// data.timestamp ä¿®æ”¹æ—¶é—´(ä»–åŸç‰ˆå†™çš„æ˜¯ä¿®æ”¹ä¸–ç•Œ)
+		// data.groupName æ¶ˆæ¯ç¾¤åç§°
+		// data.triggerNick ä¿®æ”¹åç‰‡çš„QQæ˜µç§°
+		// data.triggerQQ  ä¿®æ”¹åç‰‡çš„QQ
+		// data.content ä¿®æ”¹åçš„åç‰‡
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Frame_LoginSuccess)
 	{
-		// data.frameworkQQ µÇÂ¼³É¹¦µÄ¿ò¼ÜQQ
-		// data.triggerQQ µÇÂ¼³É¹¦µÄ¿ò¼ÜQQ
-		// data.triggerNick µÇÂ¼³É¹¦µÄ¿ò¼ÜQQêÇ³Æ
-		// data.timestamp µÇÂ¼³É¹¦µÄÊ±¼ä´Á
+		// data.frameworkQQ ç™»å½•æˆåŠŸçš„æ¡†æ¶QQ
+		// data.triggerQQ ç™»å½•æˆåŠŸçš„æ¡†æ¶QQ
+		// data.triggerNick ç™»å½•æˆåŠŸçš„æ¡†æ¶QQæ˜µç§°
+		// data.timestamp ç™»å½•æˆåŠŸçš„æ—¶é—´æˆ³
 
 		return MQ::Ignore;
 	}
 
 	if (data.msgType == MQ::Frame_LoginFailed)
 	{
-		// data.frameworkQQ µÇÂ¼Ê§°ÜµÄ¿ò¼ÜQQ
-		// data.triggerQQ µÇÂ¼Ê§°ÜµÄ¿ò¼ÜQQ
-		// data.triggerNick µÇÂ¼Ê§°ÜµÄ¿ò¼ÜQQêÇ³Æ
-		// data.timestamp µÇÂ¼Ê§°ÜµÄÊ±¼ä´Á
-		// data.content µÇÂ¼Ê§°ÜĞÅÏ¢,¸ñÊ½Îª£ºµÇÂ¼´íÎó×´Ì¬+»»ĞĞ+µÇÂ¼´íÎóĞÅÏ¢
+		// data.frameworkQQ ç™»å½•å¤±è´¥çš„æ¡†æ¶QQ
+		// data.triggerQQ ç™»å½•å¤±è´¥çš„æ¡†æ¶QQ
+		// data.triggerNick ç™»å½•å¤±è´¥çš„æ¡†æ¶QQæ˜µç§°
+		// data.timestamp ç™»å½•å¤±è´¥çš„æ—¶é—´æˆ³
+		// data.content ç™»å½•å¤±è´¥ä¿¡æ¯,æ ¼å¼ä¸ºï¼šç™»å½•é”™è¯¯çŠ¶æ€+æ¢è¡Œ+ç™»å½•é”™è¯¯ä¿¡æ¯
 
 		return MQ::Ignore;
 	}
@@ -364,18 +364,18 @@ int __stdcall _OnEventNT(EventMsgDataNT* pData)
 
 extern "C"
 {
-	// ³õÊ¼»¯NT
+	// åˆå§‹åŒ–NT
 	__declspec(dllexport)
 	const char*
 	__stdcall NTinit(const char* apidata, const char* pluginkey)
 	{
-		Api.Init(pluginkey, apidata); // API³õÊ¼»¯£¬ÇëÎğÉ¾³ı
+		Api.Init(pluginkey, apidata); // APIåˆå§‹åŒ–ï¼Œè¯·å‹¿åˆ é™¤
 
 		AppInfoNT info;
-		info.SetAppName("TODOÌæ»»Îª²å¼şÃû");
-		info.SetAppAuthor("TODOÌæ»»Îª×÷Õß");
-		info.SetAppDescription("TODOÌæ»»ÎªÏêÇé");
-		info.SetAppVersion("TODOÌæ»»Îª°æ±¾");
+		info.SetAppName("TODOæ›¿æ¢ä¸ºæ’ä»¶å");
+		info.SetAppAuthor("TODOæ›¿æ¢ä¸ºä½œè€…");
+		info.SetAppDescription("TODOæ›¿æ¢ä¸ºè¯¦æƒ…");
+		info.SetAppVersion("TODOæ›¿æ¢ä¸ºç‰ˆæœ¬");
 		info.SetAppSettingsCallback((uintptr_t)&_ControlPanelNT);
 		info.SetAppDisabledCallback((uintptr_t)&_AppEndNT);
 		info.SetAppEnabledCallback((uintptr_t)&_AppStartNT);
@@ -385,6 +385,7 @@ extern "C"
 		info.SetEventMsgCallback((uintptr_t)&_OnEventNT);
 		info.SetLogOutputCallback((uintptr_t)&_OnPluginMessageNT);
 
-		return info.È¡Êı¾İ();
+		return info.å–æ•°æ®();
 	}
+
 }
