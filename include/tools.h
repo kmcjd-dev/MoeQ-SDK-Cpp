@@ -6,19 +6,21 @@
 
 inline std::string ExtractBetween(const std::string& str, const std::string& start, const std::string& end)
 {
-    // ²éÕÒÆğÊ¼×Ö·û´®µÄÎ»ÖÃ
+    // æŸ¥æ‰¾èµ·å§‹å­—ç¬¦ä¸²çš„ä½ç½®
     size_t startPos = str.find(start);
-    if (startPos == std::string::npos) {
-        return "";  // Î´ÕÒµ½ÆğÊ¼×Ö·û´®
+    if (startPos == std::string::npos)
+    {
+        return "";  // æœªæ‰¾åˆ°èµ·å§‹å­—ç¬¦ä¸²
     }
 
-    // ´ÓÆğÊ¼×Ö·û´®Ä©Î²¿ªÊ¼²éÕÒ½áÊø×Ö·û´®
+    // ä»èµ·å§‹å­—ç¬¦ä¸²æœ«å°¾å¼€å§‹æŸ¥æ‰¾ç»“æŸå­—ç¬¦ä¸²
     size_t endPos = str.find(end, startPos + start.length());
-    if (endPos == std::string::npos) {
-        return "";  // Î´ÕÒµ½½áÊø×Ö·û´®
+    if (endPos == std::string::npos)
+    {
+        return "";  // æœªæ‰¾åˆ°ç»“æŸå­—ç¬¦ä¸²
     }
 
-    // ½ØÈ¡Á½¸ö×Ö·û´®Ö®¼äµÄ²¿·Ö
+    // æˆªå–ä¸¤ä¸ªå­—ç¬¦ä¸²ä¹‹é—´çš„éƒ¨åˆ†
     return str.substr(startPos + start.length(), endPos - (startPos + start.length()));
 }
 
@@ -32,11 +34,11 @@ inline uintptr_t StrToUintptr(const std::string& str)
         {
             ret = (uint32_t)std::stoul(str);
         }
-        catch(const std::invalid_argument& e)
+        catch (const std::invalid_argument&)
         {
             ret = 0;
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             ret = 0;
         }
@@ -47,24 +49,15 @@ inline uintptr_t StrToUintptr(const std::string& str)
         {
             ret = (uint64_t)std::stoull(str);
         }
-        catch (const std::invalid_argument& e)
+        catch (const std::invalid_argument&)
         {
             ret = 0LL;
         }
-        catch (const std::out_of_range& e)
+        catch (const std::out_of_range&)
         {
             ret = 0LL;
         }
     }
 
     return ret;
-}
-
-inline std::string StringToHex(const std::string& input) {
-    std::stringstream ss;
-    ss << std::hex << std::setfill('0') << std::uppercase;
-    for (unsigned char c : input) {
-        ss << std::setw(2) << static_cast<int>(c) << " ";
-    }
-    return ss.str();
 }
