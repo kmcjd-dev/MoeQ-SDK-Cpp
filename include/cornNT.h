@@ -11,23 +11,6 @@ private:
 
 	uintptr_t GetAPIFuncAddr(const std::string& name)
 	{
-		/*
-		// 1. ´òÓ¡Äã´úÂëÀïËÑË÷µÄÄ¿±ê¹Ø¼ü×ÖµÄ×Ö½Ú
-		std::string nameHex = StringToHex("\"" + name + "\":");
-		::MessageBoxA(nullptr, nameHex.c_str(), "ËÑË÷Ä¿±êµÄÊ®Áù½øÖÆ", MB_OK);
-
-		// 2. ´òÓ¡ËŞÖ÷´«¸øÄãµÄ apidata µÄÇ° 100 ¸ö×Ö½Ú£¨±ÜÃâÌ«³¤µ¯²»³ö£©
-		std::string dataHead = apidata.substr(0, 100);
-		std::string dataHex = StringToHex(dataHead);
-		::MessageBoxA(nullptr, dataHex.c_str(), "Êı¾İÔ´Í·²¿µÄÊ®Áù½øÖÆ", MB_OK);
-
-		// 3. ´òÓ¡Õû‚€apidata
-		::MessageBoxA(nullptr, apidata.c_str(), "apidataÍêÕûƒÈÈİ", MB_OK);
-
-		// 4. ´òÓ¡Õû‚€pluginkey
-		::MessageBoxA(nullptr, pluginkey.c_str(), "pluginkeyÍêÕûƒÈÈİ", MB_OK);
-		*/
-
 		std::string strAddr = ExtractBetween(apidata, "\"" + name + "\":", ",");
 		if (strAddr.empty())
 		{
@@ -48,394 +31,394 @@ public:
 		apidata = _apidata;
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÊä³öÈÕÖ¾
-	// …¢”µ£ºlog(ÎÄ±¾ĞÍ, ÈÕÕIƒÈÈİ), textColor(Õû”µĞÍ, ÎÄ×ÖîÉ«), backColor(Õû”µĞÍ, ±³¾°îÉ«)
-	// ‚äÔ]£ºÔÚ¿ò¼ÜÈÕÕI´°¿Úİ”³öƒÈÈİ
+	// æ˜“èªè¨€åŸåï¼šè¾“å‡ºæ—¥å¿—
+	// åƒæ•¸ï¼šlog(æ–‡æœ¬å‹, æ—¥èªŒå…§å®¹), textColor(æ•´æ•¸å‹, æ–‡å­—é¡è‰²), backColor(æ•´æ•¸å‹, èƒŒæ™¯é¡è‰²)
+	// å‚™è¨»ï¼šåœ¨æ¡†æ¶æ—¥èªŒçª—å£è¼¸å‡ºå…§å®¹
 	const char* OutputLog(const char* log, int textColor = 32768, int backColor = 16777215)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, const char*, int, int);
-		Orig func = (Orig)GetAPIFuncAddr("Êä³öÈÕÖ¾");
+		Orig func = (Orig)GetAPIFuncAddr("è¾“å‡ºæ—¥å¿—");
 		if (!func) return "";
 		return func(pluginkey.c_str(), log, textColor, backColor);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·¢ËÍÈºÏûÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), content(ÎÄ±¾ĞÍ, ƒÈÈİ), isPureText(ß‰İ‹ĞÍ, ÏûÏ¢ƒÈÈİÊÇ·ñ×÷é¼ƒÎÄ±¾°lËÍ£¬²»½âÎöCQ´a)
+	// æ˜“èªè¨€åŸåï¼šå‘é€ç¾¤æ¶ˆæ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), content(æ–‡æœ¬å‹, å…§å®¹), isPureText(é‚è¼¯å‹, æ¶ˆæ¯å…§å®¹æ˜¯å¦ä½œç‚ºç´”æ–‡æœ¬ç™¼é€ï¼Œä¸è§£æCQç¢¼)
 	const char* SendGroupMsg(long long frameworkQQ, long long groupID, const char* content, bool isPureText = false)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-		Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºÏûÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤æ¶ˆæ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, content, isPureText);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·¢ËÍºÃÓÑÏûÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Œ¦·½QQ), content(ÎÄ±¾ĞÍ, ƒÈÈİ), isPureText(ß‰İ‹ĞÍ, ÊÇ·ñ¼ƒÎÄ±¾)
+	// æ˜“èªè¨€åŸåï¼šå‘é€å¥½å‹æ¶ˆæ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, å°æ–¹QQ), content(æ–‡æœ¬å‹, å…§å®¹), isPureText(é‚è¼¯å‹, æ˜¯å¦ç´”æ–‡æœ¬)
 	const char* SendPrivateMsg(long long frameworkQQ, long long targetQQ, const char* content, bool isPureText = false)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-		Orig func = (Orig)GetAPIFuncAddr("·¢ËÍºÃÓÑÏûÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("å‘é€å¥½å‹æ¶ˆæ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ, content, isPureText);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·¢ËÍÈºÁÙÊ±ÏûÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Œ¦·½QQ), groupID(éLÕû”µĞÍ, ÈºÌ–), content(ÎÄ±¾ĞÍ, ƒÈÈİ), isPureText(ß‰İ‹ĞÍ, ÊÇ·ñ¼ƒÎÄ±¾)
-	// ‚äÔ]£ºÈºÌ–ÌîŒ‘´ú±íÔÚÈº°lÆğÅR•rË½ÁÄÏûÏ¢£¬ÌîŒ‘0±íÊ¾¼ƒºÃÓÑË½ÁÄ
+	// æ˜“èªè¨€åŸåï¼šå‘é€ç¾¤ä¸´æ—¶æ¶ˆæ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, å°æ–¹QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), content(æ–‡æœ¬å‹, å…§å®¹), isPureText(é‚è¼¯å‹, æ˜¯å¦ç´”æ–‡æœ¬)
+	// å‚™è¨»ï¼šç¾¤è™Ÿå¡«å¯«ä»£è¡¨åœ¨ç¾¤ç™¼èµ·è‡¨æ™‚ç§èŠæ¶ˆæ¯ï¼Œå¡«å¯«0è¡¨ç¤ºç´”å¥½å‹ç§èŠ
 	const char* SendGroupTemporaryMsg(long long frameworkQQ, long long targetQQ, long long groupID, const char* content, bool isPureText = false)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*, bool);
-		Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºÁÙÊ±ÏûÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤ä¸´æ—¶æ¶ˆæ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ, groupID, content, isPureText);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡ºÃÓÑÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), structArrayAddr(ºÃÓÑĞÅÏ¢NT, …¢¿¼ ”µ½M)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø”µÁ¿0
+	// æ˜“èªè¨€åŸåï¼šå–å¥½å‹åˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), structArrayAddr(å¥½å‹ä¿¡æ¯NT, åƒè€ƒ æ•¸çµ„)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›æ•¸é‡0
 	int GetFriendList(long long frameworkQQ, void* structArrayAddr)
 	{
 		typedef int(__stdcall* Orig)(const char*, long long, void*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡ºÃÓÑÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("å–å¥½å‹åˆ—è¡¨");
 		if (!func) return 0;
 		return func(pluginkey.c_str(), frameworkQQ, structArrayAddr);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡ÈºÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), structArrayAddr(ÈºĞÅÏ¢NT, …¢¿¼ ”µ½M)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø”µÁ¿0
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤åˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), structArrayAddr(ç¾¤ä¿¡æ¯NT, åƒè€ƒ æ•¸çµ„)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›æ•¸é‡0
 	int GetGroupList(long long frameworkQQ, void* structArrayAddr)
 	{
 		typedef int(__stdcall* Orig)(const char*, long long, void*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åˆ—è¡¨");
 		if (!func) return 0;
 		return func(pluginkey.c_str(), frameworkQQ, structArrayAddr);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), structArrayAddr(Èº³É†TĞÅÏ¢NT, …¢¿¼ ”µ½M)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø”µÁ¿0
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤æˆå‘˜åˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), structArrayAddr(ç¾¤æˆå“¡ä¿¡æ¯NT, åƒè€ƒ æ•¸çµ„)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›æ•¸é‡0
 	int GetGroupMemberList(long long frameworkQQ, long long groupID, void* structArrayAddr)
 	{
 		typedef int(__stdcall* Orig)(const char*, long long, long long, void*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜åˆ—è¡¨");
 		if (!func) return 0;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, structArrayAddr);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡ÈºÃû³Æ_´Ó»º´æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
-	// ‚äÔ]£º¿ÉŠÖÆÈ¡³ö
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤åç§°_ä»ç¼“å­˜
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
+	// å‚™è¨»ï¼šå¯å¼·åˆ¶å–å‡º
 	const char* GetGroupNameFromCache(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÃû³Æ_´Ó»º´æ");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åç§°_ä»ç¼“å­˜");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡êÇ³Æ_´Ó»º´æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
-	// ‚äÔ]£º¿ÉŠÖÆÈ¡³ö
+	// æ˜“èªè¨€åŸåï¼šå–æ˜µç§°_ä»ç¼“å­˜
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
+	// å‚™è¨»ï¼šå¯å¼·åˆ¶å–å‡º
 	const char* GetNickFromCache(long long frameworkQQ, long long targetQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡êÇ³Æ_´Ó»º´æ");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ˜µç§°_ä»ç¼“å­˜");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉ¾³ıÈº³ÉÔ±
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), memberQQ(éLÕû”µĞÍ, ³É†TQQ), rejectNextApply(ß‰İ‹ĞÍ, ÊÇ·ñ¾Ü½^ÔÙ´Î¼ÓÈºÉêÕˆ)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø¼Ù
+	// æ˜“èªè¨€åŸåï¼šåˆ é™¤ç¾¤æˆå‘˜
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), memberQQ(é•·æ•´æ•¸å‹, æˆå“¡QQ), rejectNextApply(é‚è¼¯å‹, æ˜¯å¦æ‹’çµ•å†æ¬¡åŠ ç¾¤ç”³è«‹)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›å‡
 	bool RemoveGroupMember(long long frameworkQQ, long long groupID, long long memberQQ, bool rejectNextApply)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, bool);
-		Orig func = (Orig)GetAPIFuncAddr("É¾³ıÈº³ÉÔ±");
+		Orig func = (Orig)GetAPIFuncAddr("åˆ é™¤ç¾¤æˆå‘˜");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, rejectNextApply);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º³·»ØÏûÏ¢_ÈºÁÄ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), msgID(éLÕû”µĞÍ, ÏûÏ¢ID)
-	// ‚äÔ]£ºÔÚÈºÏûÏ¢ÊÂ¼şÖĞÊ¹ÓÃ£¬ÄÜÊÕµ½K³·»Ø×Ô¼º°lµÄÏûÏ¢£¬¹ÜÀí†T¿É³·»ØÆäËûÈËµÄ
+	// æ˜“èªè¨€åŸåï¼šæ’¤å›æ¶ˆæ¯_ç¾¤èŠ
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), msgID(é•·æ•´æ•¸å‹, æ¶ˆæ¯ID)
+	// å‚™è¨»ï¼šåœ¨ç¾¤æ¶ˆæ¯äº‹ä»¶ä¸­ä½¿ç”¨ï¼Œèƒ½æ”¶åˆ°ä¸¦æ’¤å›è‡ªå·±ç™¼çš„æ¶ˆæ¯ï¼Œç®¡ç†å“¡å¯æ’¤å›å…¶ä»–äººçš„
 	bool RecallGroupMsg(long long frameworkQQ, long long groupID, long long msgID)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("³·»ØÏûÏ¢_ÈºÁÄ");
+		Orig func = (Orig)GetAPIFuncAddr("æ’¤å›æ¶ˆæ¯_ç¾¤èŠ");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, msgID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º³·»ØÏûÏ¢_Ë½ÁÄ±¾Éí
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), otherQQ(éLÕû”µĞÍ, Œ¦·½QQ), msgID(éLÕû”µĞÍ, ÏûÏ¢ID)
-	// ‚äÔ]£ºÓÃì¶³·»Ø×Ô¼º°lµÄÏûÏ¢£¬ÆäËûÔO‚äµÄ‚€ÈËÏûÏ¢Í¨ÖªÒ²¿ÉÒÔ³·»Ø
+	// æ˜“èªè¨€åŸåï¼šæ’¤å›æ¶ˆæ¯_ç§èŠæœ¬èº«
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), otherQQ(é•·æ•´æ•¸å‹, å°æ–¹QQ), msgID(é•·æ•´æ•¸å‹, æ¶ˆæ¯ID)
+	// å‚™è¨»ï¼šç”¨æ–¼æ’¤å›è‡ªå·±ç™¼çš„æ¶ˆæ¯ï¼Œå…¶ä»–è¨­å‚™çš„å€‹äººæ¶ˆæ¯é€šçŸ¥ä¹Ÿå¯ä»¥æ’¤å›
 	bool RecallPrivateMsg(long long frameworkQQ, long long otherQQ, long long msgID)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("³·»ØÏûÏ¢_Ë½ÁÄ±¾Éí");
+		Orig func = (Orig)GetAPIFuncAddr("æ’¤å›æ¶ˆæ¯_ç§èŠæœ¬èº«");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, otherQQ, msgID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º½ûÑÔÈº³ÉÔ±
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), memberQQ(éLÕû”µĞÍ, Ä¿˜ËQQ), duration(Õû”µĞÍ, †ÎÎ»Ãë)
-	// ‚äÔ]£º½ûÑÔ•réLé0•r½â³ı½ûÑÔ£¬Ê§”¡»òŸo™àÏŞ·µ»Ø¼Ù
+	// æ˜“èªè¨€åŸåï¼šç¦è¨€ç¾¤æˆå‘˜
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), memberQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ), duration(æ•´æ•¸å‹, å–®ä½ç§’)
+	// å‚™è¨»ï¼šç¦è¨€æ™‚é•·ç‚º0æ™‚è§£é™¤ç¦è¨€ï¼Œå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›å‡
 	bool MuteGroupMember(long long frameworkQQ, long long groupID, long long memberQQ, int duration)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, int);
-		Orig func = (Orig)GetAPIFuncAddr("½ûÑÔÈº³ÉÔ±");
+		Orig func = (Orig)GetAPIFuncAddr("ç¦è¨€ç¾¤æˆå‘˜");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, duration);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ«Ô±½ûÑÔ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), isEnable(ß‰İ‹ĞÍ, ÊÇ·ñé_†¢)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø¼Ù
+	// æ˜“èªè¨€åŸåï¼šå…¨å‘˜ç¦è¨€
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), isEnable(é‚è¼¯å‹, æ˜¯å¦é–‹å•Ÿ)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›å‡
 	bool MuteGroupAll(long long frameworkQQ, long long groupID, bool isEnable)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, bool);
-		Orig func = (Orig)GetAPIFuncAddr("È«Ô±½ûÑÔ");
+		Orig func = (Orig)GetAPIFuncAddr("å…¨å‘˜ç¦è¨€");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, isEnable);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡²å¼şÊı¾İÄ¿Â¼
-	// …¢”µ£ºpluginkey(ÎÄ±¾ĞÍ)
-	// ‚äÔ]£º›]ÓĞ™àÏŞÏŞÖÆ£¬½¨×hŒ¢ÔOÖÃÎÄ¼şÖ®îµÄ¶¼Œ‘ß@ÑeÃæ£¬½Y¹û½YÎ²§"\"
+	// æ˜“èªè¨€åŸåï¼šå–æ’ä»¶æ•°æ®ç›®å½•
+	// åƒæ•¸ï¼špluginkey(æ–‡æœ¬å‹)
+	// å‚™è¨»ï¼šæ²’æœ‰æ¬Šé™é™åˆ¶ï¼Œå»ºè­°å°‡è¨­ç½®æ–‡ä»¶ä¹‹é¡çš„éƒ½å¯«é€™è£¡é¢ï¼Œçµæœçµå°¾å¸¶"\"
 	const char* GetPluginDataDir()
 	{
 		typedef const char* (__stdcall* Orig)(const char*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡²å¼şÊı¾İÄ¿Â¼");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ’ä»¶æ•°æ®ç›®å½•");
 		if (!func) return "";
 		return func(pluginkey.c_str());
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡¿ò¼ÜQQ
-	// …¢”µ£ºpluginkey(ÎÄ±¾ĞÍ)
+	// æ˜“èªè¨€åŸåï¼šå–æ¡†æ¶QQ
+	// åƒæ•¸ï¼špluginkey(æ–‡æœ¬å‹)
 	const char* GetFrameworkQQ()
 	{
 		typedef const char* (__stdcall* Orig)(const char*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡¿ò¼ÜQQ");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ¡†æ¶QQ");
 		if (!func) return "";
 		return func(pluginkey.c_str());
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃ¹ÜÀíÔ±
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), memberQQ(éLÕû”µĞÍ, Ä¿˜ËQQ), isCancel(ß‰İ‹ĞÍ, ÊÇ·ñÈ¡Ïû)
-	// ‚äÔ]£ºÊ§”¡»òŸo™àÏŞ·µ»Ø¼Ù
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç®¡ç†å‘˜
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), memberQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ), isCancel(é‚è¼¯å‹, æ˜¯å¦å–æ¶ˆ)
+	// å‚™è¨»ï¼šå¤±æ•—æˆ–ç„¡æ¬Šé™è¿”å›å‡
 	bool SetGroupAdmin(long long frameworkQQ, long long groupID, long long memberQQ, bool isCancel)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, bool);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃ¹ÜÀíÔ±");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç®¡ç†å‘˜");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, isCancel);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÈºÃûÆ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), memberQQ(éLÕû”µĞÍ, Ä¿˜ËQQ), newNick(ÎÄ±¾ĞÍ, ĞÂ•¿·Q)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç¾¤åç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), memberQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ), newNick(æ–‡æœ¬å‹, æ–°æš±ç¨±)
 	const char* SetGroupMemberCard(long long frameworkQQ, long long groupID, long long memberQQ, const char* newNick)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈºÃûÆ¬");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤åç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, newNick);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÍËÈº
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šé€€ç¾¤
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	bool QuitGroup(long long frameworkQQ, long long groupID)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("ÍËÈº");
+		Orig func = (Orig)GetAPIFuncAddr("é€€ç¾¤");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º½âÉ¢Èº
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šè§£æ•£ç¾¤
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	bool DissolveGroup(long long frameworkQQ, long long groupID)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("½âÉ¢Èº");
+		Orig func = (Orig)GetAPIFuncAddr("è§£æ•£ç¾¤");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º´¦ÀíºÃÓÑÑéÖ¤ÊÂ¼ş
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), flag(ÎÄ±¾ĞÍ, ÊÂ¼ş˜Ë×R), isAgree(ß‰İ‹ĞÍ, ÊÇ·ñÍ¬Òâ), remark(ÎÄ±¾ĞÍ, ºÃÓÑ‚äÔ])
+	// æ˜“èªè¨€åŸåï¼šå¤„ç†å¥½å‹éªŒè¯äº‹ä»¶
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), flag(æ–‡æœ¬å‹, äº‹ä»¶æ¨™è­˜), isAgree(é‚è¼¯å‹, æ˜¯å¦åŒæ„), remark(æ–‡æœ¬å‹, å¥½å‹å‚™è¨»)
 	bool HandleFriendVerify(long long frameworkQQ, const char* flag, bool isAgree, const char* remark)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, const char*, bool, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("´¦ÀíºÃÓÑÑéÖ¤ÊÂ¼ş");
+		Orig func = (Orig)GetAPIFuncAddr("å¤„ç†å¥½å‹éªŒè¯äº‹ä»¶");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, flag, isAgree, remark);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º´¦ÀíÈºÑéÖ¤ÊÂ¼ş
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), flag(ÎÄ±¾ĞÍ, ÊÂ¼ş˜Ë×R), msgType(Õû”µĞÍ, ÏûÏ¢îĞÍ), isAgree(ß‰İ‹ĞÍ, ÊÇ·ñÍ¬Òâ), reason(ÎÄ±¾ĞÍ, ¾Ü½^ÀíÓÉ)
+	// æ˜“èªè¨€åŸåï¼šå¤„ç†ç¾¤éªŒè¯äº‹ä»¶
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), flag(æ–‡æœ¬å‹, äº‹ä»¶æ¨™è­˜), msgType(æ•´æ•¸å‹, æ¶ˆæ¯é¡å‹), isAgree(é‚è¼¯å‹, æ˜¯å¦åŒæ„), reason(æ–‡æœ¬å‹, æ‹’çµ•ç†ç”±)
 	bool HandleGroupVerify(long long frameworkQQ, const char* flag, int msgType, bool isAgree, const char* reason)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, const char*, int, bool, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("´¦ÀíÈºÑéÖ¤ÊÂ¼ş");
+		Orig func = (Orig)GetAPIFuncAddr("å¤„ç†ç¾¤éªŒè¯äº‹ä»¶");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, flag, msgType, isAgree, reason);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉÏ´«ÈºÍ¼Æ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), picData(×Ö¹¼¯, ˆDÆ¬”µ“şµØÖ·), picSize(Õû”µĞÍ, ”µ“şéL¶È)
+	// æ˜“èªè¨€åŸåï¼šä¸Šä¼ ç¾¤å›¾ç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), picData(å­—ç¯€é›†, åœ–ç‰‡æ•¸æ“šåœ°å€), picSize(æ•´æ•¸å‹, æ•¸æ“šé•·åº¦)
 	const char* UploadGroupImg(long long frameworkQQ, void* picData, int picSize)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ÈºÍ¼Æ¬");
+		Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ ç¾¤å›¾ç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, picData, picSize);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉÏ´«ºÃÓÑÍ¼Æ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), picData(×Ö¹¼¯, ˆDÆ¬”µ“şµØÖ·), picSize(Õû”µĞÍ, ”µ“şéL¶È)
+	// æ˜“èªè¨€åŸåï¼šä¸Šä¼ å¥½å‹å›¾ç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), picData(å­—ç¯€é›†, åœ–ç‰‡æ•¸æ“šåœ°å€), picSize(æ•´æ•¸å‹, æ•¸æ“šé•·åº¦)
 	const char* UploadFriendImg(long long frameworkQQ, void* picData, int picSize)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ºÃÓÑÍ¼Æ¬");
+		Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ å¥½å‹å›¾ç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, picData, picSize);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡¹ÜÀí²ãÁĞ±í
-		// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šå–ç®¡ç†å±‚åˆ—è¡¨
+		// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	const char* GetGroupAdminList(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡¹ÜÀí²ãÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç®¡ç†å±‚åˆ—è¡¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉÏ´«ÈºÓïÒô
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), audioData(×Ö¹¼¯, ÕZÒô”µ“şµØÖ·), audioSize(Õû”µĞÍ, ”µ“şéL¶È)
+	// æ˜“èªè¨€åŸåï¼šä¸Šä¼ ç¾¤è¯­éŸ³
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), audioData(å­—ç¯€é›†, èªéŸ³æ•¸æ“šåœ°å€), audioSize(æ•´æ•¸å‹, æ•¸æ“šé•·åº¦)
 	const char* UploadGroupAudio(long long frameworkQQ, void* audioData, int audioSize)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ÈºÓïÒô");
+		Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ ç¾¤è¯­éŸ³");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, audioData, audioSize);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉÏ´«ºÃÓÑÓïÒô
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), audioData(×Ö¹¼¯, ÕZÒô”µ“şµØÖ·), audioSize(Õû”µĞÍ, ”µ“şéL¶È)
+	// æ˜“èªè¨€åŸåï¼šä¸Šä¼ å¥½å‹è¯­éŸ³
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), audioData(å­—ç¯€é›†, èªéŸ³æ•¸æ“šåœ°å€), audioSize(æ•´æ•¸å‹, æ•¸æ“šé•·åº¦)
 	const char* UploadFriendAudio(long long frameworkQQ, void* audioData, int audioSize)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ºÃÓÑÓïÒô");
+		Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ å¥½å‹è¯­éŸ³");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, audioData, audioSize);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡Í¼Æ¬ÏÂÔØµØÖ·
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), cqImage(ÎÄ±¾ĞÍ, ‚÷ÈëCQ´aÖĞµÄˆDÆ¬²¿·Ö)
+	// æ˜“èªè¨€åŸåï¼šå–å›¾ç‰‡ä¸‹è½½åœ°å€
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), cqImage(æ–‡æœ¬å‹, å‚³å…¥CQç¢¼ä¸­çš„åœ–ç‰‡éƒ¨åˆ†)
 	const char* GetImgDownloadUrl(long long frameworkQQ, const char* cqImage)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡Í¼Æ¬ÏÂÔØµØÖ·");
+		Orig func = (Orig)GetAPIFuncAddr("å–å›¾ç‰‡ä¸‹è½½åœ°å€");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, cqImage);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·¢ËÍÈºjsonÏûÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), jsonContent(ÎÄ±¾ĞÍ, JSONƒÈÈİ), isPureText(ß‰İ‹ĞÍ, ÊÇ·ñ¼ƒÎÄ±¾)
+	// æ˜“èªè¨€åŸåï¼šå‘é€ç¾¤jsonæ¶ˆæ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), jsonContent(æ–‡æœ¬å‹, JSONå…§å®¹), isPureText(é‚è¼¯å‹, æ˜¯å¦ç´”æ–‡æœ¬)
 	const char* SendGroupJsonMsg(long long frameworkQQ, long long groupID, const char* jsonContent, bool isPureText = false)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-		Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºjsonÏûÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤jsonæ¶ˆæ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, jsonContent, isPureText);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º²éÑ¯Ä°ÉúÈËĞÅÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
-	// ‚äÔ]£ºŒëHÉÏÖ»ÄÜ²éÔƒÈº†TĞÅÏ¢£¬·µ»ØµÄjson ×Ô¼º½âÎö
+	// æ˜“èªè¨€åŸåï¼šæŸ¥è¯¢é™Œç”Ÿäººä¿¡æ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
+	// å‚™è¨»ï¼šå¯¦éš›ä¸Šåªèƒ½æŸ¥è©¢ç¾¤å“¡ä¿¡æ¯ï¼Œè¿”å›çš„json è‡ªå·±è§£æ
 	const char* GetStrangerInfo(long long frameworkQQ, long long targetQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("²éÑ¯Ä°ÉúÈËĞÅÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("æŸ¥è¯¢é™Œç”Ÿäººä¿¡æ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÕËºÅĞÅÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), nick(ÎÄ±¾ĞÍ, •¿·Q), sign(ÎÄ±¾ĞÍ, ºÃû), gender(ÎÄ±¾ĞÍ, ĞÔ„e)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®è´¦å·ä¿¡æ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), nick(æ–‡æœ¬å‹, æš±ç¨±), sign(æ–‡æœ¬å‹, ç°½å), gender(æ–‡æœ¬å‹, æ€§åˆ¥)
 	const char* SetAccountInfo(long long frameworkQQ, const char* nick, const char* sign, const char* gender)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÕËºÅĞÅÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®è´¦å·ä¿¡æ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, nick, sign, gender);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡µÇÂ¼ºÅĞÅÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ)
-	// ‚äÔ]£º·µ»ØµÄjson °üº¬ÓĞ™CÆ÷ÈË•¿·Q
+	// æ˜“èªè¨€åŸåï¼šè·å–ç™»å½•å·ä¿¡æ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ)
+	// å‚™è¨»ï¼šè¿”å›çš„json åŒ…å«æœ‰æ©Ÿå™¨äººæš±ç¨±
 	const char* GetLoginAccountInfo(long long frameworkQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡µÇÂ¼ºÅĞÅÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç™»å½•å·ä¿¡æ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡¿ò¼Ü°æ±¾
-	// …¢”µ£ºpluginkey(ÎÄ±¾ĞÍ)
+	// æ˜“èªè¨€åŸåï¼šå–æ¡†æ¶ç‰ˆæœ¬
+	// åƒæ•¸ï¼špluginkey(æ–‡æœ¬å‹)
 	const char* GetFrameworkVersion()
 	{
 		typedef const char* (__stdcall* Orig)(const char*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡¿ò¼Ü°æ±¾");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ¡†æ¶ç‰ˆæœ¬");
 		if (!func) return "";
 		return func(pluginkey.c_str());
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡²å¼şÎÄ¼şÃû
-	// …¢”µ£ºpluginkey(ÎÄ±¾ĞÍ)
+	// æ˜“èªè¨€åŸåï¼šå–æ’ä»¶æ–‡ä»¶å
+	// åƒæ•¸ï¼špluginkey(æ–‡æœ¬å‹)
 	const char* GetPluginFileName()
 	{
 		typedef const char* (__stdcall* Orig)(const char*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡²å¼şÎÄ¼şÃû");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ’ä»¶æ–‡ä»¶å");
 		if (!func) return "";
 		return func(pluginkey.c_str());
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ÃûÆ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), memberQQ(éLÕû”µĞÍ, ³É†TQQ)
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤æˆå‘˜åç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), memberQQ(é•·æ•´æ•¸å‹, æˆå“¡QQ)
 	const char* GetGroupMemberCard(long long frameworkQQ, long long groupID, long long memberQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ÃûÆ¬");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜åç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡ÏûÏ¢ÏêÏ¸
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), msgID(éLÕû”µĞÍ, ÏûÏ¢ID)
+	// æ˜“èªè¨€åŸåï¼šè·å–æ¶ˆæ¯è¯¦ç»†
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), msgID(é•·æ•´æ•¸å‹, æ¶ˆæ¯ID)
 	const char* GetMsgDetails(long long frameworkQQ, long long msgID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÏûÏ¢ÏêÏ¸");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–æ¶ˆæ¯è¯¦ç»†");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, msgID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉÏ´«¶ÌÊÓÆµ
-		// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), videoData(×Ö¹¼¯, ”µ“şµØÖ·), videoSize(Õû”µĞÍ, ”µ“şéL¶È)
+	// æ˜“èªè¨€åŸåï¼šä¸Šä¼ çŸ­è§†é¢‘
+		// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), videoData(å­—ç¯€é›†, æ•¸æ“šåœ°å€), videoSize(æ•´æ•¸å‹, æ•¸æ“šé•·åº¦)
 	const char* UploadShortVideo(long long frameworkQQ, void* videoData, int videoSize)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«¶ÌÊÓÆµ");
+		Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ çŸ­è§†é¢‘");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, videoData, videoSize);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º×Ô¶¨ÒåÒôÀÖ·ÖÏí
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), jumpUrl(ÎÄ±¾ĞÍ, üc“ôÌøŞDµØÖ·), fileUrl(ÎÄ±¾ĞÍ, ÒôÔ´µØÖ·), title(ÎÄ±¾ĞÍ, ˜Ëî}), cover(ÎÄ±¾ĞÍ, ·âÃæµØÖ·), desc(ÎÄ±¾ĞÍ, ÃèÊö)
+	// æ˜“èªè¨€åŸåï¼šè‡ªå®šä¹‰éŸ³ä¹åˆ†äº«
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), jumpUrl(æ–‡æœ¬å‹, é»æ“Šè·³è½‰åœ°å€), fileUrl(æ–‡æœ¬å‹, éŸ³æºåœ°å€), title(æ–‡æœ¬å‹, æ¨™é¡Œ), cover(æ–‡æœ¬å‹, å°é¢åœ°å€), desc(æ–‡æœ¬å‹, æè¿°)
 	const char* ShareCustomMusic(
 		long long frameworkQQ,
 		long long groupID,
@@ -447,246 +430,246 @@ public:
 	)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*, const char*, const char*, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("×Ô¶¨ÒåÒôÀÖ·ÖÏí");
+		Orig func = (Orig)GetAPIFuncAddr("è‡ªå®šä¹‰éŸ³ä¹åˆ†äº«");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, jumpUrl, fileUrl, title, cover, desc);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ĞÅÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), targetQQ(éLÕû”µĞÍ, Œ¦·½QQ), structAddr(Èº³É†TĞÅÏ¢NT½Y˜‹ówÖ¸á˜, …¢¿¼)
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤æˆå‘˜ä¿¡æ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), targetQQ(é•·æ•´æ•¸å‹, å°æ–¹QQ), structAddr(ç¾¤æˆå“¡ä¿¡æ¯NTçµæ§‹é«”æŒ‡é‡, åƒè€ƒ)
 	const char* GetGroupMemberInfo(long long frameworkQQ, long long groupID, long long targetQQ, void* structAddr)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, void*);
-		Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ĞÅÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜ä¿¡æ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ, structAddr);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º²éÑ¯Ä³ÈËÊÇ·ñ±»½ûÑÔ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
-	// ‚äÔ]£º¿ÉÒÔ²éÔƒ×Ô¼º£¬·µ»Ø½ûÑÔÊ£ğNÃë”µ£¬Î´±»½ûÑÔ·µ»Ø0
+	// æ˜“èªè¨€åŸåï¼šæŸ¥è¯¢æŸäººæ˜¯å¦è¢«ç¦è¨€
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
+	// å‚™è¨»ï¼šå¯ä»¥æŸ¥è©¢è‡ªå·±ï¼Œè¿”å›ç¦è¨€å‰©é¤˜ç§’æ•¸ï¼Œæœªè¢«ç¦è¨€è¿”å›0
 	int IsMemberMuted(long long frameworkQQ, long long groupID, long long targetQQ)
 	{
 		typedef int(__stdcall* Orig)(const char*, long long, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("²éÑ¯Ä³ÈËÊÇ·ñ±»½ûÑÔ");
+		Orig func = (Orig)GetAPIFuncAddr("æŸ¥è¯¢æŸäººæ˜¯å¦è¢«ç¦è¨€");
 		if (!func) return 0;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡skey
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ)
+	// æ˜“èªè¨€åŸåï¼šè·å–skey
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ)
 	const char* GetSkey(long long frameworkQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡skey");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–skey");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡pskey
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), domain(ÎÄ±¾ĞÍ, ÓòÃû)
-	// ÓòÃûÓĞtenpay.com;openmobile.qq.com;docs.qq.com;connect.qq.com;qzone.qq.com;vip.qq.com;gamecenter.qq.com;qun.qq.com;game.qq.com;qqweb.qq.com;ti.qq.com;office.qq.com;mail.qq.com;mma.qq.com;qidian.qq.com
+	// æ˜“èªè¨€åŸåï¼šè·å–pskey
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), domain(æ–‡æœ¬å‹, åŸŸå)
+	// åŸŸåæœ‰tenpay.com;openmobile.qq.com;docs.qq.com;connect.qq.com;qzone.qq.com;vip.qq.com;gamecenter.qq.com;qun.qq.com;game.qq.com;qqweb.qq.com;ti.qq.com;office.qq.com;mail.qq.com;mma.qq.com;qidian.qq.com
 	const char* GetPskey(long long frameworkQQ, const char* domain)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡pskey");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–pskey");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, domain);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡ÈºÃû³Æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šå–ç¾¤åç§°
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	const char* GetGroupName(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÃû³Æ");
+		Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åç§°");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÈ¡êÇ³Æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), QQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
+	// æ˜“èªè¨€åŸåï¼šå–æ˜µç§°
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), QQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
 	const char* GetNick(long long frameworkQQ, long long QQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("È¡êÇ³Æ");
+		Orig func = (Orig)GetAPIFuncAddr("å–æ˜µç§°");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, QQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÖØÔØ×ÔÉí
-	// …¢”µ£ºnewDllPath(ÎÄ±¾ĞÍ, ĞÂdllÂ·½)
-	// ‚äÔ]£ºÌîÈëĞÂÂ·½¿ÉŒ¬FÌæ“Q¸üĞÂ£¬Ä¬ÕJÖµé"empty"
+	// æ˜“èªè¨€åŸåï¼šé‡è½½è‡ªèº«
+	// åƒæ•¸ï¼šnewDllPath(æ–‡æœ¬å‹, æ–°dllè·¯å¾‘)
+	// å‚™è¨»ï¼šå¡«å…¥æ–°è·¯å¾‘å¯å¯¦ç¾æ›¿æ›æ›´æ–°ï¼Œé»˜èªå€¼ç‚º"empty"
 	void ReloadSelf(const char* newDllPath = "empty")
 	{
 		typedef void(__stdcall* Orig)(const char*, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÖØÔØ×ÔÉí");
+		Orig func = (Orig)GetAPIFuncAddr("é‡è½½è‡ªèº«");
 		if (func) func(pluginkey.c_str(), newDllPath);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃ×¨ÊôÍ·ÏÎ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ), title(ÎÄ±¾ĞÍ, î^ã•ƒÈÈİ)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ä¸“å±å¤´è¡”
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ), title(æ–‡æœ¬å‹, é ­éŠœå…§å®¹)
 	const char* SetGroupSpecialTitle(long long frameworkQQ, long long groupID, long long targetQQ, const char* title)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃ×¨ÊôÍ·ÏÎ");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ä¸“å±å¤´è¡”");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ, title);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡ÍÆ¼öÈºÁÄ¿¨Æ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetGroupID(éLÕû”µĞÍ, Ä¿˜ËÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šè·å–æ¨èç¾¤èŠå¡ç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetGroupID(é•·æ•´æ•¸å‹, ç›®æ¨™ç¾¤è™Ÿ)
 	const char* GetRecommendGroupCard(long long frameworkQQ, long long targetGroupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÍÆ¼öÈºÁÄ¿¨Æ¬");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–æ¨èç¾¤èŠå¡ç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetGroupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡ÍÆ¼öºÃÓÑ¿¨Æ¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
+	// æ˜“èªè¨€åŸåï¼šè·å–æ¨èå¥½å‹å¡ç‰‡
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
 	const char* GetRecommendFriendCard(long long frameworkQQ, long long targetQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÍÆ¼öºÃÓÑ¿¨Æ¬");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–æ¨èå¥½å‹å¡ç‰‡");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃQQÍ·Ïñ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, íÔ´ÈºÌ–), filePathOrUrl(ÎÄ±¾ĞÍ, ±¾µØÂ·½»òURL)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®QQå¤´åƒ
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ä¾†æºç¾¤è™Ÿ), filePathOrUrl(æ–‡æœ¬å‹, æœ¬åœ°è·¯å¾‘æˆ–URL)
 	const char* SetQQAvatar(long long frameworkQQ, long long groupID, const char* filePathOrUrl)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃQQÍ·Ïñ");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®QQå¤´åƒ");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, filePathOrUrl);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡µãÔŞÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç‚¹èµåˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ)
 	const char* GetLikeList(long long frameworkQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡µãÔŞÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç‚¹èµåˆ—è¡¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡Èº¾«»ªÏûÏ¢
-		// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç¾¤ç²¾åæ¶ˆæ¯
+		// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	const char* GetGroupEssenceMsg(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¾«»ªÏûÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤ç²¾åæ¶ˆæ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡ÎÄ¼şĞÅÏ¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), fileID(ÎÄ±¾ĞÍ, ÎÄ¼şID)
+	// æ˜“èªè¨€åŸåï¼šè·å–æ–‡ä»¶ä¿¡æ¯
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), fileID(æ–‡æœ¬å‹, æ–‡ä»¶ID)
 	const char* GetFileInfo(long long frameworkQQ, const char* fileID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÎÄ¼şĞÅÏ¢");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–æ–‡ä»¶ä¿¡æ¯");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, fileID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡Èº¸ùÄ¿Â¼ÎÄ¼şÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç¾¤æ ¹ç›®å½•æ–‡ä»¶åˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	const char* GetGroupRootFileList(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¸ùÄ¿Â¼ÎÄ¼şÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤æ ¹ç›®å½•æ–‡ä»¶åˆ—è¡¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡Èº×ÓÄ¿Â¼ÎÄ¼şÁĞ±í
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), folderID(ÎÄ±¾ĞÍ, Ä¿ä›ID), fileCount(Õû”µĞÍ, «@È¡”µÁ¿)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç¾¤å­ç›®å½•æ–‡ä»¶åˆ—è¡¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), folderID(æ–‡æœ¬å‹, ç›®éŒ„ID), fileCount(æ•´æ•¸å‹, ç²å–æ•¸é‡)
 	const char* GetGroupSubFileList(long long frameworkQQ, long long groupID, const char* folderID, int fileCount)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, int);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº×ÓÄ¿Â¼ÎÄ¼şÁĞ±í");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤å­ç›®å½•æ–‡ä»¶åˆ—è¡¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, folderID, fileCount);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡ÈºÎÄ¼ş×ÊÔ´Á´½Ó
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), fileID(ÎÄ±¾ĞÍ, ÎÄ¼şID)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç¾¤æ–‡ä»¶èµ„æºé“¾æ¥
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), fileID(æ–‡æœ¬å‹, æ–‡ä»¶ID)
 	const char* GetGroupFileResourceUrl(long long frameworkQQ, long long groupID, const char* fileID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÈºÎÄ¼ş×ÊÔ´Á´½Ó");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤æ–‡ä»¶èµ„æºé“¾æ¥");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, fileID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º»ñÈ¡Èº¹«¸æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–)
+	// æ˜“èªè¨€åŸåï¼šè·å–ç¾¤å…¬å‘Š
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ)
 	const char* GetGroupNotice(long long frameworkQQ, long long groupID)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¹«¸æ");
+		Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤å…¬å‘Š");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÈº¹«¸æ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), content(ÎÄ±¾ĞÍ, ƒÈÈİ), imagePathOrUrl(ÎÄ±¾ĞÍ, ˆDÆ¬Â·½»òURL)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç¾¤å…¬å‘Š
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), content(æ–‡æœ¬å‹, å…§å®¹), imagePathOrUrl(æ–‡æœ¬å‹, åœ–ç‰‡è·¯å¾‘æˆ–URL)
 	const char* SetGroupNotice(long long frameworkQQ, long long groupID, const char* content, const char* imagePathOrUrl)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈº¹«¸æ");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤å…¬å‘Š");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, content, imagePathOrUrl);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃºÃÓÑ±¸×¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ), remark(ÎÄ±¾ĞÍ, ĞÂ‚äÔ]ÎÄ±¾)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®å¥½å‹å¤‡æ³¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ), remark(æ–‡æœ¬å‹, æ–°å‚™è¨»æ–‡æœ¬)
 	const char* SetFriendRemark(long long frameworkQQ, long long targetQQ, const char* remark)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃºÃÓÑ±¸×¢");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®å¥½å‹å¤‡æ³¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ, remark);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÈº±¸×¢
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), remark(ÎÄ±¾ĞÍ, ĞÂ‚äÔ]ÎÄ±¾)
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç¾¤å¤‡æ³¨
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), remark(æ–‡æœ¬å‹, æ–°å‚™è¨»æ–‡æœ¬)
 	const char* SetGroupRemark(long long frameworkQQ, long long groupID, const char* remark)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈº±¸×¢");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤å¤‡æ³¨");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, remark);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÈºÏûÏ¢½ÓÊÜ·½Ê½
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), mode(Õû”µĞÍ, ·½Ê½)
-	// ‚äÔ]£º1½ÓÊÕKÌáĞÑ, 2ÊÕßMÖúÊÖ, 3ÆÁ±Î, 4½ÓÊÕ²»ÌáĞÑ
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç¾¤æ¶ˆæ¯æ¥å—æ–¹å¼
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), mode(æ•´æ•¸å‹, æ–¹å¼)
+	// å‚™è¨»ï¼š1æ¥æ”¶ä¸¦æé†’, 2æ”¶é€²åŠ©æ‰‹, 3å±è”½, 4æ¥æ”¶ä¸æé†’
 	const char* SetGroupMsgReceiveMode(long long frameworkQQ, long long groupID, int mode)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈºÏûÏ¢½ÓÊÜ·½Ê½");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤æ¶ˆæ¯æ¥å—æ–¹å¼");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, mode);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·¢ËÍÊı¾İ°ü
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), jsonPacket(ÎÄ±¾ĞÍ, JSON”µ“ş°ü), waitTimeMs(Õû”µĞÍ, µÈ´ı•réLms)
+	// æ˜“èªè¨€åŸåï¼šå‘é€æ•°æ®åŒ…
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), jsonPacket(æ–‡æœ¬å‹, JSONæ•¸æ“šåŒ…), waitTimeMs(æ•´æ•¸å‹, ç­‰å¾…æ™‚é•·ms)
 	const char* SendPacket(long long frameworkQQ, const char* jsonPacket, int waitTimeMs)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, int);
-		Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÊı¾İ°ü");
+		Orig func = (Orig)GetAPIFuncAddr("å‘é€æ•°æ®åŒ…");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, jsonPacket, waitTimeMs);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£º·ÖÏíÒôÀÖ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, Ä¿˜ËÈº/QQ), songName(ÎÄ±¾ĞÍ), artist(ÎÄ±¾ĞÍ), jumpUrl(ÎÄ±¾ĞÍ), fileUrl(ÎÄ±¾ĞÍ), coverUrl(ÎÄ±¾ĞÍ), shareType(Õû”µĞÍ, 0Ë½ÁÄ 1ÈºÁÄ)
+	// æ˜“èªè¨€åŸåï¼šåˆ†äº«éŸ³ä¹
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç›®æ¨™ç¾¤/QQ), songName(æ–‡æœ¬å‹), artist(æ–‡æœ¬å‹), jumpUrl(æ–‡æœ¬å‹), fileUrl(æ–‡æœ¬å‹), coverUrl(æ–‡æœ¬å‹), shareType(æ•´æ•¸å‹, 0ç§èŠ 1ç¾¤èŠ)
 	const char* ShareMusic(
 		long long frameworkQQ,
 		long long groupID,
@@ -699,40 +682,40 @@ public:
 	)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*, const char*, const char*, const char*, int);
-		Orig func = (Orig)GetAPIFuncAddr("·ÖÏíÒôÀÖ");
+		Orig func = (Orig)GetAPIFuncAddr("åˆ†äº«éŸ³ä¹");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, songName, artist, jumpUrl, fileUrl, coverUrl, shareType);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºµãÔŞ
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), targetQQ(éLÕû”µĞÍ, Ä¿˜ËQQ)
-	// ‚äÔ]£ºÕ{ÓÃ¿ò¼Ü½oÖ¸¶¨QQÃûÆ¬üc×“
+	// æ˜“èªè¨€åŸåï¼šç‚¹èµ
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), targetQQ(é•·æ•´æ•¸å‹, ç›®æ¨™QQ)
+	// å‚™è¨»ï¼šèª¿ç”¨æ¡†æ¶çµ¦æŒ‡å®šQQåç‰‡é»è®š
 	const char* SendLike(long long frameworkQQ, long long targetQQ)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-		Orig func = (Orig)GetAPIFuncAddr("µãÔŞ");
+		Orig func = (Orig)GetAPIFuncAddr("ç‚¹èµ");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÈºÃû
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), groupID(éLÕû”µĞÍ, ÈºÌ–), newGroupName(ÎÄ±¾ĞÍ, ĞÂÈºÃû)
-	// ‚äÔ]£ºĞŞ¸ÄÖ¸¶¨ÈºÁÄµÄÃû·Q£¬Ğè¹ÜÀí†T™àÏŞ
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®ç¾¤å
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), groupID(é•·æ•´æ•¸å‹, ç¾¤è™Ÿ), newGroupName(æ–‡æœ¬å‹, æ–°ç¾¤å)
+	// å‚™è¨»ï¼šä¿®æ”¹æŒ‡å®šç¾¤èŠçš„åç¨±ï¼Œéœ€ç®¡ç†å“¡æ¬Šé™
 	bool SetGroupName(long long frameworkQQ, long long groupID, const char* newGroupName)
 	{
 		typedef bool(__stdcall* Orig)(const char*, long long, long long, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈºÃû");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤å");
 		if (!func) return false;
 		return func(pluginkey.c_str(), frameworkQQ, groupID, newGroupName);
 	}
 
-	// Ò×ÕZÑÔÔ­Ãû£ºÉèÖÃÔÚÏß×´Ì¬
-	// …¢”µ£ºframeworkQQ(éLÕû”µĞÍ, ¿ò¼ÜQQ), status(Õû”µĞÍ,  î‘B´a), battery(Õû”µĞÍ, ëŠÁ¿)
-	// ‚äÔ]£º î‘B´a£º11(ÔÚ¾€), 31(ëxé_), 41(ë[Éí), 50(Ã¦Âµ), 60(QÎÒ°É), 70(ÕˆÎğ´ò”_)£»ëŠÁ¿£º1-100
+	// æ˜“èªè¨€åŸåï¼šè®¾ç½®åœ¨çº¿çŠ¶æ€
+	// åƒæ•¸ï¼šframeworkQQ(é•·æ•´æ•¸å‹, æ¡†æ¶QQ), status(æ•´æ•¸å‹, ç‹€æ…‹ç¢¼), battery(æ•´æ•¸å‹, é›»é‡)
+	// å‚™è¨»ï¼šç‹€æ…‹ç¢¼ï¼š11(åœ¨ç·š), 31(é›¢é–‹), 41(éš±èº«), 50(å¿™ç¢Œ), 60(Qæˆ‘å§), 70(è«‹å‹¿æ‰“æ“¾)ï¼›é›»é‡ï¼š1-100
 	const char* SetOnlineStatus(long long frameworkQQ, int status, int battery = 100)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, int, int);
-		Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÔÚÏß×´Ì¬");
+		Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®åœ¨çº¿çŠ¶æ€");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, status, battery);
 	}
@@ -764,507 +747,508 @@ public:
 	cornNT() {};
 	~cornNT() {};
 
-    // Ò×ÕZÑÔÔ­Ãû£ºint
+    // æ˜“èªè¨€åŸåï¼šint
 	void Init(const std::string& _pluginkey, const std::string& _apidata)
 	{
 		pluginkey = _pluginkey;
 		apidata = _apidata;
 	}
 
-    // Ò×ÕZÑÔÔ­Ãû£ºÊä³öÈÕÖ¾
-    const char* Êä³öÈÕÖ¾(const char* log, int textColor = 32896, int backColor = 16777215) {
+    // æ˜“èªè¨€åŸåï¼šè¾“å‡ºæ—¥å¿—
+    const char* è¾“å‡ºæ—¥å¿—(const char* log, int textColor = 32896, int backColor = 16777215) {
         typedef const char* (__stdcall* OutputLogOrig)(const char*, const char*, int, int);
-        OutputLogOrig func = (OutputLogOrig)GetAPIFuncAddr("Êä³öÈÕÖ¾");
+        OutputLogOrig func = (OutputLogOrig)GetAPIFuncAddr("è¾“å‡ºæ—¥å¿—");
         if (!func) return "";
         return func(pluginkey.c_str(), log, textColor, backColor);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·¢ËÍÈºÏûÏ¢
-    const char* ·¢ËÍÈºÏûÏ¢(long long frameworkQQ, long long groupID, const char* content, bool isPureText = false) {
+    // æ˜“è¯­è¨€åŸåï¼šå‘é€ç¾¤æ¶ˆæ¯
+    const char* å‘é€ç¾¤æ¶ˆæ¯(long long frameworkQQ, long long groupID, const char* content, bool isPureText = false) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-        Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºÏûÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤æ¶ˆæ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, content, isPureText);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·¢ËÍºÃÓÑÏûÏ¢
-    const char* ·¢ËÍºÃÓÑÏûÏ¢(long long frameworkQQ, long long targetQQ, const char* content, bool isPureText = false) {
+    // æ˜“è¯­è¨€åŸåï¼šå‘é€å¥½å‹æ¶ˆæ¯
+    const char* å‘é€å¥½å‹æ¶ˆæ¯(long long frameworkQQ, long long targetQQ, const char* content, bool isPureText = false) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-        Orig func = (Orig)GetAPIFuncAddr("·¢ËÍºÃÓÑÏûÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("å‘é€å¥½å‹æ¶ˆæ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ, content, isPureText);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·¢ËÍÈºÁÙÊ±ÏûÏ¢
-    const char* ·¢ËÍÈºÁÙÊ±ÏûÏ¢(long long frameworkQQ, long long targetQQ, long long groupID, const char* content, bool isPureText = false) {
+    // æ˜“è¯­è¨€åŸåï¼šå‘é€ç¾¤ä¸´æ—¶æ¶ˆæ¯
+    const char* å‘é€ç¾¤ä¸´æ—¶æ¶ˆæ¯(long long frameworkQQ, long long targetQQ, long long groupID, const char* content, bool isPureText = false) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*, bool);
-        Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºÁÙÊ±ÏûÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤ä¸´æ—¶æ¶ˆæ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ, groupID, content, isPureText);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡ºÃÓÑÁĞ±í
-    int È¡ºÃÓÑÁĞ±í(long long frameworkQQ, void* structArrayAddr) {
+    // æ˜“è¯­è¨€åŸåï¼šå–å¥½å‹åˆ—è¡¨
+    int å–å¥½å‹åˆ—è¡¨(long long frameworkQQ, void* structArrayAddr) {
         typedef int(__stdcall* Orig)(const char*, long long, void*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡ºÃÓÑÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("å–å¥½å‹åˆ—è¡¨");
         if (!func) return 0;
         return func(pluginkey.c_str(), frameworkQQ, structArrayAddr);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡ÈºÁĞ±í
-    int È¡ÈºÁĞ±í(long long frameworkQQ, void* structArrayAddr) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤åˆ—è¡¨
+    int å–ç¾¤åˆ—è¡¨(long long frameworkQQ, void* structArrayAddr) {
         typedef int(__stdcall* Orig)(const char*, long long, void*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åˆ—è¡¨");
         if (!func) return 0;
         return func(pluginkey.c_str(), frameworkQQ, structArrayAddr);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ÁĞ±í
-    int È¡Èº³ÉÔ±ÁĞ±í(long long frameworkQQ, long long groupID, void* structArrayAddr) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤æˆå‘˜åˆ—è¡¨
+    int å–ç¾¤æˆå‘˜åˆ—è¡¨(long long frameworkQQ, long long groupID, void* structArrayAddr) {
         typedef int(__stdcall* Orig)(const char*, long long, long long, void*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜åˆ—è¡¨");
         if (!func) return 0;
         return func(pluginkey.c_str(), frameworkQQ, groupID, structArrayAddr);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡ÈºÃû³Æ_´Ó»º´æ
-    const char* È¡ÈºÃû³Æ_´Ó»º´æ(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤åç§°_ä»ç¼“å­˜
+    const char* å–ç¾¤åç§°_ä»ç¼“å­˜(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÃû³Æ_´Ó»º´æ");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åç§°_ä»ç¼“å­˜");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡êÇ³Æ_´Ó»º´æ
-    const char* È¡êÇ³Æ_´Ó»º´æ(long long frameworkQQ, long long targetQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ˜µç§°_ä»ç¼“å­˜
+    const char* å–æ˜µç§°_ä»ç¼“å­˜(long long frameworkQQ, long long targetQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡êÇ³Æ_´Ó»º´æ");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ˜µç§°_ä»ç¼“å­˜");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉ¾³ıÈº³ÉÔ±
-    bool É¾³ıÈº³ÉÔ±(long long frameworkQQ, long long groupID, long long memberQQ, bool rejectNextApply) {
+    // æ˜“è¯­è¨€åŸåï¼šåˆ é™¤ç¾¤æˆå‘˜
+    bool åˆ é™¤ç¾¤æˆå‘˜(long long frameworkQQ, long long groupID, long long memberQQ, bool rejectNextApply) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, bool);
-        Orig func = (Orig)GetAPIFuncAddr("É¾³ıÈº³ÉÔ±");
+        Orig func = (Orig)GetAPIFuncAddr("åˆ é™¤ç¾¤æˆå‘˜");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, rejectNextApply);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º³·»ØÏûÏ¢_ÈºÁÄ
-    bool ³·»ØÏûÏ¢_ÈºÁÄ(long long frameworkQQ, long long groupID, long long msgID) {
+    // æ˜“è¯­è¨€åŸåï¼šæ’¤å›æ¶ˆæ¯_ç¾¤èŠ
+    bool æ’¤å›æ¶ˆæ¯_ç¾¤èŠ(long long frameworkQQ, long long groupID, long long msgID) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("³·»ØÏûÏ¢_ÈºÁÄ");
+        Orig func = (Orig)GetAPIFuncAddr("æ’¤å›æ¶ˆæ¯_ç¾¤èŠ");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID, msgID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º³·»ØÏûÏ¢_Ë½ÁÄ±¾Éí
-    bool ³·»ØÏûÏ¢_Ë½ÁÄ±¾Éí(long long frameworkQQ, long long otherQQ, long long msgID) {
+    // æ˜“è¯­è¨€åŸåï¼šæ’¤å›æ¶ˆæ¯_ç§èŠæœ¬èº«
+    bool æ’¤å›æ¶ˆæ¯_ç§èŠæœ¬èº«(long long frameworkQQ, long long otherQQ, long long msgID) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("³·»ØÏûÏ¢_Ë½ÁÄ±¾Éí");
+        Orig func = (Orig)GetAPIFuncAddr("æ’¤å›æ¶ˆæ¯_ç§èŠæœ¬èº«");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, otherQQ, msgID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º½ûÑÔÈº³ÉÔ±
-    bool ½ûÑÔÈº³ÉÔ±(long long frameworkQQ, long long groupID, long long memberQQ, int duration) {
+    // æ˜“è¯­è¨€åŸåï¼šç¦è¨€ç¾¤æˆå‘˜
+    bool ç¦è¨€ç¾¤æˆå‘˜(long long frameworkQQ, long long groupID, long long memberQQ, int duration) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, int);
-        Orig func = (Orig)GetAPIFuncAddr("½ûÑÔÈº³ÉÔ±");
+        Orig func = (Orig)GetAPIFuncAddr("ç¦è¨€ç¾¤æˆå‘˜");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, duration);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ«Ô±½ûÑÔ
-    bool È«Ô±½ûÑÔ(long long frameworkQQ, long long groupID, bool isEnable) {
+    // æ˜“è¯­è¨€åŸåï¼šå…¨å‘˜ç¦è¨€
+    bool å…¨å‘˜ç¦è¨€(long long frameworkQQ, long long groupID, bool isEnable) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, bool);
-        Orig func = (Orig)GetAPIFuncAddr("È«Ô±½ûÑÔ");
+        Orig func = (Orig)GetAPIFuncAddr("å…¨å‘˜ç¦è¨€");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID, isEnable);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡²å¼şÊı¾İÄ¿Â¼
-    const char* È¡²å¼şÊı¾İÄ¿Â¼() {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ’ä»¶æ•°æ®ç›®å½•
+    const char* å–æ’ä»¶æ•°æ®ç›®å½•() {
         typedef const char* (__stdcall* Orig)(const char*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡²å¼şÊı¾İÄ¿Â¼");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ’ä»¶æ•°æ®ç›®å½•");
         if (!func) return "";
         return func(pluginkey.c_str());
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡¿ò¼ÜQQ
-    const char* È¡¿ò¼ÜQQ() {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ¡†æ¶QQ
+    const char* å–æ¡†æ¶QQ() {
         typedef const char* (__stdcall* Orig)(const char*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡¿ò¼ÜQQ");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ¡†æ¶QQ");
         if (!func) return "";
         return func(pluginkey.c_str());
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃ¹ÜÀíÔ±
-    bool ÉèÖÃ¹ÜÀíÔ±(long long frameworkQQ, long long groupID, long long memberQQ, bool isCancel) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ç®¡ç†å‘˜
+    bool è®¾ç½®ç®¡ç†å‘˜(long long frameworkQQ, long long groupID, long long memberQQ, bool isCancel) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long, long long, bool);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃ¹ÜÀíÔ±");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç®¡ç†å‘˜");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, isCancel);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃÈºÃûÆ¬
-    const char* ÉèÖÃÈºÃûÆ¬(long long frameworkQQ, long long groupID, long long memberQQ, const char* newNick) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ç¾¤åç‰‡
+    const char* è®¾ç½®ç¾¤åç‰‡(long long frameworkQQ, long long groupID, long long memberQQ, const char* newNick) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈºÃûÆ¬");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤åç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ, newNick);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÍËÈº
-    bool ÍËÈº(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šé€€ç¾¤
+    bool é€€ç¾¤(long long frameworkQQ, long long groupID) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("ÍËÈº");
+        Orig func = (Orig)GetAPIFuncAddr("é€€ç¾¤");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º½âÉ¢Èº
-    bool ½âÉ¢Èº(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šè§£æ•£ç¾¤
+    bool è§£æ•£ç¾¤(long long frameworkQQ, long long groupID) {
         typedef bool(__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("½âÉ¢Èº");
+        Orig func = (Orig)GetAPIFuncAddr("è§£æ•£ç¾¤");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º´¦ÀíºÃÓÑÑéÖ¤ÊÂ¼ş
-    bool ´¦ÀíºÃÓÑÑéÖ¤ÊÂ¼ş(long long frameworkQQ, const char* flag, bool isAgree, const char* remark) {
+    // æ˜“è¯­è¨€åŸåï¼šå¤„ç†å¥½å‹éªŒè¯äº‹ä»¶
+    bool å¤„ç†å¥½å‹éªŒè¯äº‹ä»¶(long long frameworkQQ, const char* flag, bool isAgree, const char* remark) {
         typedef bool(__stdcall* Orig)(const char*, long long, const char*, bool, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("´¦ÀíºÃÓÑÑéÖ¤ÊÂ¼ş");
+        Orig func = (Orig)GetAPIFuncAddr("å¤„ç†å¥½å‹éªŒè¯äº‹ä»¶");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, flag, isAgree, remark);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º´¦ÀíÈºÑéÖ¤ÊÂ¼ş
-    bool ´¦ÀíÈºÑéÖ¤ÊÂ¼ş(long long frameworkQQ, const char* flag, int msgType, bool isAgree, const char* reason) {
+    // æ˜“è¯­è¨€åŸåï¼šå¤„ç†ç¾¤éªŒè¯äº‹ä»¶
+    bool å¤„ç†ç¾¤éªŒè¯äº‹ä»¶(long long frameworkQQ, const char* flag, int msgType, bool isAgree, const char* reason) {
         typedef bool(__stdcall* Orig)(const char*, long long, const char*, int, bool, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("´¦ÀíÈºÑéÖ¤ÊÂ¼ş");
+        Orig func = (Orig)GetAPIFuncAddr("å¤„ç†ç¾¤éªŒè¯äº‹ä»¶");
         if (!func) return false;
         return func(pluginkey.c_str(), frameworkQQ, flag, msgType, isAgree, reason);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉÏ´«ÈºÍ¼Æ¬
-    const char* ÉÏ´«ÈºÍ¼Æ¬(long long frameworkQQ, void* picData, int picSize) {
+    // æ˜“è¯­è¨€åŸåï¼šä¸Šä¼ ç¾¤å›¾ç‰‡
+    const char* ä¸Šä¼ ç¾¤å›¾ç‰‡(long long frameworkQQ, void* picData, int picSize) {
         typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ÈºÍ¼Æ¬");
+        Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ ç¾¤å›¾ç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, picData, picSize);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉÏ´«ºÃÓÑÍ¼Æ¬
-    const char* ÉÏ´«ºÃÓÑÍ¼Æ¬(long long frameworkQQ, void* picData, int picSize) {
+    // æ˜“è¯­è¨€åŸåï¼šä¸Šä¼ å¥½å‹å›¾ç‰‡
+    const char* ä¸Šä¼ å¥½å‹å›¾ç‰‡(long long frameworkQQ, void* picData, int picSize) {
         typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ºÃÓÑÍ¼Æ¬");
+        Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ å¥½å‹å›¾ç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, picData, picSize);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡¹ÜÀí²ãÁĞ±í
-    const char* È¡¹ÜÀí²ãÁĞ±í(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç®¡ç†å±‚åˆ—è¡¨
+    const char* å–ç®¡ç†å±‚åˆ—è¡¨(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡¹ÜÀí²ãÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç®¡ç†å±‚åˆ—è¡¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉÏ´«ÈºÓïÒô
-    const char* ÉÏ´«ÈºÓïÒô(long long frameworkQQ, void* audioData, int audioSize) {
+    // æ˜“è¯­è¨€åŸåï¼šä¸Šä¼ ç¾¤è¯­éŸ³
+    const char* ä¸Šä¼ ç¾¤è¯­éŸ³(long long frameworkQQ, void* audioData, int audioSize) {
         typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ÈºÓïÒô");
+        Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ ç¾¤è¯­éŸ³");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, audioData, audioSize);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉÏ´«ºÃÓÑÓïÒô
-    const char* ÉÏ´«ºÃÓÑÓïÒô(long long frameworkQQ, void* audioData, int audioSize) {
+    // æ˜“è¯­è¨€åŸåï¼šä¸Šä¼ å¥½å‹è¯­éŸ³
+    const char* ä¸Šä¼ å¥½å‹è¯­éŸ³(long long frameworkQQ, void* audioData, int audioSize) {
         typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«ºÃÓÑÓïÒô");
+        Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ å¥½å‹è¯­éŸ³");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, audioData, audioSize);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡Í¼Æ¬ÏÂÔØµØÖ·
-    const char* È¡Í¼Æ¬ÏÂÔØµØÖ·(long long frameworkQQ, const char* cqImage) {
+    // æ˜“è¯­è¨€åŸåï¼šå–å›¾ç‰‡ä¸‹è½½åœ°å€
+    const char* å–å›¾ç‰‡ä¸‹è½½åœ°å€(long long frameworkQQ, const char* cqImage) {
         typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡Í¼Æ¬ÏÂÔØµØÖ·");
+        Orig func = (Orig)GetAPIFuncAddr("å–å›¾ç‰‡ä¸‹è½½åœ°å€");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, cqImage);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·¢ËÍÈºjsonÏûÏ¢
-    const char* ·¢ËÍÈºjsonÏûÏ¢(long long frameworkQQ, long long groupID, const char* jsonContent, bool isPureText = false) {
+    // æ˜“è¯­è¨€åŸåï¼šå‘é€ç¾¤jsonæ¶ˆæ¯
+    const char* å‘é€ç¾¤jsonæ¶ˆæ¯(long long frameworkQQ, long long groupID, const char* jsonContent, bool isPureText = false) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, bool);
-        Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÈºjsonÏûÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("å‘é€ç¾¤jsonæ¶ˆæ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, jsonContent, isPureText);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º²éÑ¯Ä°ÉúÈËĞÅÏ¢
-    const char* ²éÑ¯Ä°ÉúÈËĞÅÏ¢(long long frameworkQQ, long long targetQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šæŸ¥è¯¢é™Œç”Ÿäººä¿¡æ¯
+    const char* æŸ¥è¯¢é™Œç”Ÿäººä¿¡æ¯(long long frameworkQQ, long long targetQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("²éÑ¯Ä°ÉúÈËĞÅÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("æŸ¥è¯¢é™Œç”Ÿäººä¿¡æ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃÕËºÅĞÅÏ¢
-    const char* ÉèÖÃÕËºÅĞÅÏ¢(long long frameworkQQ, const char* nick, const char* sign, const char* gender) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®è´¦å·ä¿¡æ¯
+    const char* è®¾ç½®è´¦å·ä¿¡æ¯(long long frameworkQQ, const char* nick, const char* sign, const char* gender) {
         typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÕËºÅĞÅÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®è´¦å·ä¿¡æ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, nick, sign, gender);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡µÇÂ¼ºÅĞÅÏ¢
-    const char* »ñÈ¡µÇÂ¼ºÅĞÅÏ¢(long long frameworkQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç™»å½•å·ä¿¡æ¯
+    const char* è·å–ç™»å½•å·ä¿¡æ¯(long long frameworkQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡µÇÂ¼ºÅĞÅÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç™»å½•å·ä¿¡æ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡¿ò¼Ü°æ±¾
-    const char* È¡¿ò¼Ü°æ±¾() {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ¡†æ¶ç‰ˆæœ¬
+    const char* å–æ¡†æ¶ç‰ˆæœ¬() {
         typedef const char* (__stdcall* Orig)(const char*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡¿ò¼Ü°æ±¾");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ¡†æ¶ç‰ˆæœ¬");
         if (!func) return "";
         return func(pluginkey.c_str());
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡²å¼şÎÄ¼şÃû
-    const char* È¡²å¼şÎÄ¼şÃû() {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ’ä»¶æ–‡ä»¶å
+    const char* å–æ’ä»¶æ–‡ä»¶å() {
         typedef const char* (__stdcall* Orig)(const char*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡²å¼şÎÄ¼şÃû");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ’ä»¶æ–‡ä»¶å");
         if (!func) return "";
         return func(pluginkey.c_str());
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ÃûÆ¬
-    const char* È¡Èº³ÉÔ±ÃûÆ¬(long long frameworkQQ, long long groupID, long long memberQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤æˆå‘˜åç‰‡
+    const char* å–ç¾¤æˆå‘˜åç‰‡(long long frameworkQQ, long long groupID, long long memberQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ÃûÆ¬");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜åç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, memberQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡ÏûÏ¢ÏêÏ¸
-    const char* »ñÈ¡ÏûÏ¢ÏêÏ¸(long long frameworkQQ, long long msgID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–æ¶ˆæ¯è¯¦ç»†
+    const char* è·å–æ¶ˆæ¯è¯¦ç»†(long long frameworkQQ, long long msgID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÏûÏ¢ÏêÏ¸");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–æ¶ˆæ¯è¯¦ç»†");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, msgID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉÏ´«¶ÌÊÓÆµ
-    const char* ÉÏ´«¶ÌÊÓÆµ(long long frameworkQQ, void* videoData, int videoSize) {
+    // æ˜“è¯­è¨€åŸåï¼šä¸Šä¼ çŸ­è§†é¢‘
+    const char* ä¸Šä¼ çŸ­è§†é¢‘(long long frameworkQQ, void* videoData, int videoSize) {
         typedef const char* (__stdcall* Orig)(const char*, long long, void*, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉÏ´«¶ÌÊÓÆµ");
+        Orig func = (Orig)GetAPIFuncAddr("ä¸Šä¼ çŸ­è§†é¢‘");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, videoData, videoSize);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º×Ô¶¨ÒåÒôÀÖ·ÖÏí
-    const char* ×Ô¶¨ÒåÒôÀÖ·ÖÏí(long long frameworkQQ, long long groupID, const char* jumpUrl, const char* fileUrl, const char* title, const char* cover, const char* desc) {
+    // æ˜“è¯­è¨€åŸåï¼šè‡ªå®šä¹‰éŸ³ä¹åˆ†äº«
+    const char* è‡ªå®šä¹‰éŸ³ä¹åˆ†äº«(long long frameworkQQ, long long groupID, const char* jumpUrl, const char* fileUrl, const char* title, const char* cover, const char* desc) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*, const char*, const char*, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("×Ô¶¨ÒåÒôÀÖ·ÖÏí");
+        Orig func = (Orig)GetAPIFuncAddr("è‡ªå®šä¹‰éŸ³ä¹åˆ†äº«");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, jumpUrl, fileUrl, title, cover, desc);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡Èº³ÉÔ±ĞÅÏ¢
-    const char* È¡Èº³ÉÔ±ĞÅÏ¢(long long frameworkQQ, long long groupID, long long targetQQ, void* structAddr) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤æˆå‘˜ä¿¡æ¯
+    const char* å–ç¾¤æˆå‘˜ä¿¡æ¯(long long frameworkQQ, long long groupID, long long targetQQ, void* structAddr) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, void*);
-        Orig func = (Orig)GetAPIFuncAddr("È¡Èº³ÉÔ±ĞÅÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤æˆå‘˜ä¿¡æ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ, structAddr);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º²éÑ¯Ä³ÈËÊÇ·ñ±»½ûÑÔ
-    int ²éÑ¯Ä³ÈËÊÇ·ñ±»½ûÑÔ(long long frameworkQQ, long long groupID, long long targetQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šæŸ¥è¯¢æŸäººæ˜¯å¦è¢«ç¦è¨€
+    int æŸ¥è¯¢æŸäººæ˜¯å¦è¢«ç¦è¨€(long long frameworkQQ, long long groupID, long long targetQQ) {
         typedef int(__stdcall* Orig)(const char*, long long, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("²éÑ¯Ä³ÈËÊÇ·ñ±»½ûÑÔ");
+        Orig func = (Orig)GetAPIFuncAddr("æŸ¥è¯¢æŸäººæ˜¯å¦è¢«ç¦è¨€");
         if (!func) return 0;
         return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡skey
-    const char* »ñÈ¡skey(long long frameworkQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–skey
+    const char* è·å–skey(long long frameworkQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡skey");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–skey");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡pskey
-    const char* »ñÈ¡pskey(long long frameworkQQ, const char* domain) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–pskey
+    const char* è·å–pskey(long long frameworkQQ, const char* domain) {
         typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡pskey");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–pskey");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, domain);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡ÈºÃû³Æ
-    const char* È¡ÈºÃû³Æ(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šå–ç¾¤åç§°
+    const char* å–ç¾¤åç§°(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡ÈºÃû³Æ");
+        Orig func = (Orig)GetAPIFuncAddr("å–ç¾¤åç§°");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÈ¡êÇ³Æ
-    const char* È¡êÇ³Æ(long long frameworkQQ, long long QQ) {
+    // æ˜“è¯­è¨€åŸåï¼šå–æ˜µç§°
+    const char* å–æ˜µç§°(long long frameworkQQ, long long QQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("È¡êÇ³Æ");
+        Orig func = (Orig)GetAPIFuncAddr("å–æ˜µç§°");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, QQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÖØÔØ×ÔÉí
-    void ÖØÔØ×ÔÉí(const char* newDllPath = "empty") {
+    // æ˜“è¯­è¨€åŸåï¼šé‡è½½è‡ªèº«
+    void é‡è½½è‡ªèº«(const char* newDllPath = "empty") {
         typedef void(__stdcall* Orig)(const char*, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÖØÔØ×ÔÉí");
+        Orig func = (Orig)GetAPIFuncAddr("é‡è½½è‡ªèº«");
         if (func) func(pluginkey.c_str(), newDllPath);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃ×¨ÊôÍ·ÏÎ
-    const char* ÉèÖÃ×¨ÊôÍ·ÏÎ(long long frameworkQQ, long long groupID, long long targetQQ, const char* title) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ä¸“å±å¤´è¡”
+    const char* è®¾ç½®ä¸“å±å¤´è¡”(long long frameworkQQ, long long groupID, long long targetQQ, const char* title) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃ×¨ÊôÍ·ÏÎ");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ä¸“å±å¤´è¡”");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ, title);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡ÍÆ¼öÈºÁÄ¿¨Æ¬
-    const char* »ñÈ¡ÍÆ¼öÈºÁÄ¿¨Æ¬(long long frameworkQQ, long long targetGroupID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–æ¨èç¾¤èŠå¡ç‰‡
+    const char* è·å–æ¨èç¾¤èŠå¡ç‰‡(long long frameworkQQ, long long targetGroupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÍÆ¼öÈºÁÄ¿¨Æ¬");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–æ¨èç¾¤èŠå¡ç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetGroupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡ÍÆ¼öºÃÓÑ¿¨Æ¬
-    const char* »ñÈ¡ÍÆ¼öºÃÓÑ¿¨Æ¬(long long frameworkQQ, long long targetQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–æ¨èå¥½å‹å¡ç‰‡
+    const char* è·å–æ¨èå¥½å‹å¡ç‰‡(long long frameworkQQ, long long targetQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÍÆ¼öºÃÓÑ¿¨Æ¬");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–æ¨èå¥½å‹å¡ç‰‡");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃQQÍ·Ïñ
-    const char* ÉèÖÃQQÍ·Ïñ(long long frameworkQQ, long long groupID, const char* filePathOrUrl) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®QQå¤´åƒ
+    const char* è®¾ç½®QQå¤´åƒ(long long frameworkQQ, long long groupID, const char* filePathOrUrl) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃQQÍ·Ïñ");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®QQå¤´åƒ");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, filePathOrUrl);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡µãÔŞÁĞ±í
-    const char* »ñÈ¡µãÔŞÁĞ±í(long long frameworkQQ) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç‚¹èµåˆ—è¡¨
+    const char* è·å–ç‚¹èµåˆ—è¡¨(long long frameworkQQ) {
         typedef const char* (__stdcall* Orig)(const char*, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡µãÔŞÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç‚¹èµåˆ—è¡¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡Èº¾«»ªÏûÏ¢
-    const char* »ñÈ¡Èº¾«»ªÏûÏ¢(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç¾¤ç²¾åæ¶ˆæ¯
+    const char* è·å–ç¾¤ç²¾åæ¶ˆæ¯(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¾«»ªÏûÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤ç²¾åæ¶ˆæ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡ÎÄ¼şĞÅÏ¢
-    const char* »ñÈ¡ÎÄ¼şĞÅÏ¢(long long frameworkQQ, const char* fileID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–æ–‡ä»¶ä¿¡æ¯
+    const char* è·å–æ–‡ä»¶ä¿¡æ¯(long long frameworkQQ, const char* fileID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÎÄ¼şĞÅÏ¢");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–æ–‡ä»¶ä¿¡æ¯");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, fileID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡Èº¸ùÄ¿Â¼ÎÄ¼şÁĞ±í
-    const char* »ñÈ¡Èº¸ùÄ¿Â¼ÎÄ¼şÁĞ±í(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç¾¤æ ¹ç›®å½•æ–‡ä»¶åˆ—è¡¨
+    const char* è·å–ç¾¤æ ¹ç›®å½•æ–‡ä»¶åˆ—è¡¨(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¸ùÄ¿Â¼ÎÄ¼şÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤æ ¹ç›®å½•æ–‡ä»¶åˆ—è¡¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡Èº×ÓÄ¿Â¼ÎÄ¼şÁĞ±í
-    const char* »ñÈ¡Èº×ÓÄ¿Â¼ÎÄ¼şÁĞ±í(long long frameworkQQ, long long groupID, const char* folderID, int fileCount) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç¾¤å­ç›®å½•æ–‡ä»¶åˆ—è¡¨
+    const char* è·å–ç¾¤å­ç›®å½•æ–‡ä»¶åˆ—è¡¨(long long frameworkQQ, long long groupID, const char* folderID, int fileCount) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, int);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº×ÓÄ¿Â¼ÎÄ¼şÁĞ±í");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤å­ç›®å½•æ–‡ä»¶åˆ—è¡¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, folderID, fileCount);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡ÈºÎÄ¼ş×ÊÔ´Á´½Ó
-    const char* »ñÈ¡ÈºÎÄ¼ş×ÊÔ´Á´½Ó(long long frameworkQQ, long long groupID, const char* fileID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç¾¤æ–‡ä»¶èµ„æºé“¾æ¥
+    const char* è·å–ç¾¤æ–‡ä»¶èµ„æºé“¾æ¥(long long frameworkQQ, long long groupID, const char* fileID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡ÈºÎÄ¼ş×ÊÔ´Á´½Ó");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤æ–‡ä»¶èµ„æºé“¾æ¥");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, fileID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º»ñÈ¡Èº¹«¸æ
-    const char* »ñÈ¡Èº¹«¸æ(long long frameworkQQ, long long groupID) {
+    // æ˜“è¯­è¨€åŸåï¼šè·å–ç¾¤å…¬å‘Š
+    const char* è·å–ç¾¤å…¬å‘Š(long long frameworkQQ, long long groupID) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long);
-        Orig func = (Orig)GetAPIFuncAddr("»ñÈ¡Èº¹«¸æ");
+        Orig func = (Orig)GetAPIFuncAddr("è·å–ç¾¤å…¬å‘Š");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃÈº¹«¸æ
-    const char* ÉèÖÃÈº¹«¸æ(long long frameworkQQ, long long groupID, const char* content, const char* imagePathOrUrl) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ç¾¤å…¬å‘Š
+    const char* è®¾ç½®ç¾¤å…¬å‘Š(long long frameworkQQ, long long groupID, const char* content, const char* imagePathOrUrl) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈº¹«¸æ");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤å…¬å‘Š");
         if (!func) return "";
-        // ×¢Òâ£ºÔ­´ú´aÔOÖÃÈº¹«¸æÕ{ÓÃ•r‚÷…¢ËÆºõÓĞÕ`£¨ÉÙÁË content£¿£©£¬ß@Ñe°´ÕÕÔ­´ú´a‚÷ßf imagePathOrUrl Î»
+        // æ³¨æ„ï¼šåŸä»£ç¢¼è¨­ç½®ç¾¤å…¬å‘Šèª¿ç”¨æ™‚å‚³åƒä¼¼ä¹æœ‰èª¤ï¼ˆå°‘äº† contentï¼Ÿï¼‰ï¼Œé€™è£¡æŒ‰ç…§åŸä»£ç¢¼å‚³é imagePathOrUrl ä½
         return func(pluginkey.c_str(), frameworkQQ, groupID, imagePathOrUrl);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃºÃÓÑ±¸×¢
-    const char* ÉèÖÃºÃÓÑ±¸×¢(long long frameworkQQ, long long targetQQ, const char* remark) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®å¥½å‹å¤‡æ³¨
+    const char* è®¾ç½®å¥½å‹å¤‡æ³¨(long long frameworkQQ, long long targetQQ, const char* remark) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃºÃÓÑ±¸×¢");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®å¥½å‹å¤‡æ³¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, targetQQ, remark);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃÈº±¸×¢
-    const char* ÉèÖÃÈº±¸×¢(long long frameworkQQ, long long groupID, const char* remark) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ç¾¤å¤‡æ³¨
+    const char* è®¾ç½®ç¾¤å¤‡æ³¨(long long frameworkQQ, long long groupID, const char* remark) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈº±¸×¢");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤å¤‡æ³¨");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, remark);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£ºÉèÖÃÈºÏûÏ¢½ÓÊÜ·½Ê½
-    const char* ÉèÖÃÈºÏûÏ¢½ÓÊÜ·½Ê½(long long frameworkQQ, long long groupID, int mode) {
+    // æ˜“è¯­è¨€åŸåï¼šè®¾ç½®ç¾¤æ¶ˆæ¯æ¥å—æ–¹å¼
+    const char* è®¾ç½®ç¾¤æ¶ˆæ¯æ¥å—æ–¹å¼(long long frameworkQQ, long long groupID, int mode) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, int);
-        Orig func = (Orig)GetAPIFuncAddr("ÉèÖÃÈºÏûÏ¢½ÓÊÜ·½Ê½");
+        Orig func = (Orig)GetAPIFuncAddr("è®¾ç½®ç¾¤æ¶ˆæ¯æ¥å—æ–¹å¼");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, mode);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·¢ËÍÊı¾İ°ü
-    const char* ·¢ËÍÊı¾İ°ü(long long frameworkQQ, const char* jsonPacket, int waitTimeMs) {
+    // æ˜“è¯­è¨€åŸåï¼šå‘é€æ•°æ®åŒ…
+    const char* å‘é€æ•°æ®åŒ…(long long frameworkQQ, const char* jsonPacket, int waitTimeMs) {
         typedef const char* (__stdcall* Orig)(const char*, long long, const char*, int);
-        Orig func = (Orig)GetAPIFuncAddr("·¢ËÍÊı¾İ°ü");
+        Orig func = (Orig)GetAPIFuncAddr("å‘é€æ•°æ®åŒ…");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, jsonPacket, waitTimeMs);
     }
 
-    // Ò×ÓïÑÔÔ­Ãû£º·ÖÏíÒôÀÖ
-    const char* ·ÖÏíÒôÀÖ(long long frameworkQQ, long long groupID, const char* songName, const char* artist, const char* jumpUrl, const char* fileUrl, const char* coverUrl, int shareType) {
+    // æ˜“è¯­è¨€åŸåï¼šåˆ†äº«éŸ³ä¹
+    const char* åˆ†äº«éŸ³ä¹(long long frameworkQQ, long long groupID, const char* songName, const char* artist, const char* jumpUrl, const char* fileUrl, const char* coverUrl, int shareType) {
         typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*, const char*, const char*, const char*, int);
-        Orig func = (Orig)GetAPIFuncAddr("·ÖÏíÒôÀÖ");
+        Orig func = (Orig)GetAPIFuncAddr("åˆ†äº«éŸ³ä¹");
         if (!func) return "";
         return func(pluginkey.c_str(), frameworkQQ, groupID, songName, artist, jumpUrl, fileUrl, coverUrl, shareType);
     }
 };
+
 */
