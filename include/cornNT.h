@@ -717,11 +717,11 @@ public:
 	// 易語言原名：设置群名
 	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(長整數型, 群號), newGroupName(文本型, 新群名)
 	// 備註：修改指定群聊的名稱，需管理員權限
-	const char* SetGroupName(long long frameworkQQ, long long groupID, const char* newGroupName)
+	const char* SetGroupName(long long frameworkQQ, const char* groupID, const char* newGroupName)
 	{
-		typedef const char*(__stdcall* Orig)(const char*, long long, long long, const char*);
+		typedef const char*(__stdcall* Orig)(const char*, long long, const char*, const char*);
 		Orig func = (Orig)GetAPIFuncAddr("设置群名");
-		if (!func) return false;
+		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, groupID, newGroupName);
 	}
 
@@ -735,4 +735,287 @@ public:
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, status, extStatus, battery);
 	}
+
+	// ===== 2026/02/25增加 =====
+
+
+	// 易語言原名：获取好友分组列表
+	// 參數：frameworkQQ(長整數型, 框架QQ), structArrayAddr(好友分組結構體, 參考 數組)(現爲傳輸FriendGroup結構體指針 請強轉爲void*)
+	// 備註：失敗或無權限返回數量0
+	int GetFriendGroupList(long long frameworkQQ, void* structArrayAddr)
+	{
+		typedef int(__stdcall* Orig)(const char*, long long, void*);
+		Orig func = (Orig)GetAPIFuncAddr("获取好友分组列表");
+		if (!func) return 0;
+		return func(pluginkey.c_str(), frameworkQQ, structArrayAddr);
+	}
+
+	// 易語言原名：创建收藏
+	// 參數：frameworkQQ(長整數型, 框架QQ), title(文本型, 標題), content(文本型, 內容)
+	// 備註：失敗或無權限返回數量0
+	const char* CreateCollection(long long frameworkQQ, const char* title, const char* content)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("创建收藏");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, title, content);
+	}
+
+	// 易語言原名：设置个性签名
+	// 參數：frameworkQQ(長整數型, 框架QQ), content(文本型, 內容)
+	// 備註：失敗或無權限返回數量0
+	const char* SetSignature(long long frameworkQQ, const char* content)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("设置个性签名");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, content);
+	}
+
+	// 易語言原名：获取收藏表情
+	// 參數：frameworkQQ(長整數型, 框架QQ), index(整數型, 內容/索引)
+	// 備註：失敗或無權限返回數量0
+	const char* GetCollectionEmoji(long long frameworkQQ, int index)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, int);
+		Orig func = (Orig)GetAPIFuncAddr("获取收藏表情");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, index);
+	}
+
+	// 易語言原名：上传私聊文件
+	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 對方QQ), dir(文本型, 文件目錄), fileName(文本型, 文件名)
+	const char* UploadPrivateFile(long long frameworkQQ, const char* targetQQ, const char* dir, const char* fileName)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("上传私聊文件");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, dir, fileName);
+	}
+
+	// 易語言原名：删除好友
+	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 對方QQ), isBlacklist(邏輯型, 拉黑), isTwoWay(邏輯型, 雙向刪除)
+	const char* DeleteFriend(long long frameworkQQ, const char* targetQQ, bool isBlacklist, bool isTwoWay)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, bool, bool);
+		Orig func = (Orig)GetAPIFuncAddr("删除好友");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, isBlacklist, isTwoWay);
+	}
+
+	// 易語言原名：获取用户状态
+	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 對方QQ)
+	const char* GetUserStatus(long long frameworkQQ, const char* targetQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("获取用户状态");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
+	}
+
+	// 易語言原名：发送群语音
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), filePath(文本型, 文件路徑)
+	// 備註：參考官網教程，需語音庫支持
+	const char* SendGroupAudioByPath(long long frameworkQQ, const char* groupID, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群语音");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, filePath);
+	}
+
+	// 易語言原名：发送群聊超级表情_骰子
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號)
+	const char* SendGroupEmojiDice(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群聊超级表情_骰子");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名：发送群聊超级表情_猜拳
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號)
+	const char* SendGroupEmojiRPS(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群聊超级表情_猜拳");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名：发送群视频
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), filePath(文本型, 文件路徑)
+	const char* SendGroupVideo(long long frameworkQQ, const char* groupID, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群视频");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, filePath);
+	}
+
+	// 易語言原名：发送群文件
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), filePath(文本型, 文件目錄)
+	const char* SendGroupFile(long long frameworkQQ, const char* groupID, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群文件");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, filePath);
+	}
+
+	// 易語言原名：发送群聊戳一戳
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), targetQQ(文本型, 對方QQ)
+	const char* SendGroupPoke(long long frameworkQQ, const char* groupID, const char* targetQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群聊戳一戳");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, targetQQ);
+	}
+
+	// 易語言原名：发送群合并转发消息
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(長整數型, 群號), title(文本型, 標題), content(文本型, 消息內容)
+	// 備註：功能暫時失效，等框架修復。內容格式：QQ[=]暱稱[=]類型[=]數據
+	const char* SendGroupForwardMsg(long long frameworkQQ, long long groupID, const char* title, const char* content)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群合并转发消息");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, title, content);
+	}
+
+	// 易語言原名：发送私聊圖片
+	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 對方QQ), imgPath(文本型, 圖片地址)
+	const char* SendPrivateImg(long long frameworkQQ, const char* targetQQ, const char* imgPath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊圖片");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, imgPath);
+	}
+
+	// 易語言原名：贴表情
+	// 參數：frameworkQQ(長整數型, 框架QQ), msgID(文本型, 消息ID), emojiID(整數型, 表情ID), isSet(邏輯型, 設置)
+	const char* SetMessageEmojiLike(long long frameworkQQ, const char* msgID, int emojiID, bool isSet)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, int, bool);
+		Orig func = (Orig)GetAPIFuncAddr("贴表情");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, msgID, emojiID, isSet);
+	}
+
+	// 易語言原名：最近消息列表
+	// 參數：frameworkQQ(長整數型, 框架QQ), count(整數型, 會話數量)
+	const char* GetRecentContactList(long long frameworkQQ, int count)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, int);
+		Orig func = (Orig)GetAPIFuncAddr("最近消息列表");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, count);
+	}
+
+	// 易語言原名：设置群头像
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), filePath(文本型, 文件目錄)
+	const char* SetGroupAvatar(long long frameworkQQ, const char* groupID, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("设置群头像");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, filePath);
+	}
+
+	// 易語言原名：设置群精华消息
+	// 參數：frameworkQQ(長整數型, 框架QQ), msgID(文本型, 消息ID)
+	const char* SetGroupEssenceMsg(long long frameworkQQ, const char* msgID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("设置群精华消息");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, msgID);
+	}
+
+	// 易語言原名：删除群精华消息
+	// 參數：frameworkQQ(長整數型, 框架QQ), msgID(文本型, 消息ID)
+	const char* RemoveGroupEssenceMsg(long long frameworkQQ, const char* msgID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("删除群精华消息");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, msgID);
+	}
+
+	// 易語言原名：获取艾特全体剩余次数
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號)
+	const char* GetAtAllRemainCount(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("获取艾特全体剩余次数");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名：获取AI语音人物
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), chatType(整數型, 聊天類型)
+	// 備註：返回json包含人物暱稱、ID及試聽位址
+	const char* GetAIVoiceCharacters(long long frameworkQQ, const char* groupID, int chatType = 0)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, int);
+		Orig func = (Orig)GetAPIFuncAddr("获取AI语音人物");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, chatType);
+	}
+
+	// 易語言原名：发送群AI语音
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號), characterID(文本型, 人物ID), text(文本型, 文本消息)
+	const char* SendGroupAIVoice(long long frameworkQQ, const char* groupID, const char* characterID, const char* text)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群AI语音");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, characterID, text);
+	}
+
+	// 易語言原名：COR图片识别
+	// 參數：frameworkQQ(長整數型, 框架QQ), imgPathOrUrl(文本型, 圖片地址)
+	// 備註：支持網絡地址或本地路徑
+	const char* GetImageOCR(long long frameworkQQ, const char* imgPathOrUrl)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("COR图片识别");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, imgPathOrUrl);
+	}
+
+	// 易語言原名：获取在线机型
+	// 參數：frameworkQQ(長整數型, 框架QQ)
+	const char* GetOnlineDeviceModel(long long frameworkQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long);
+		Orig func = (Orig)GetAPIFuncAddr("获取在线机型");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ);
+	}
+
+	// 易語言原名：获取群禁言列表
+	// 參數：frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群號)
+	const char* GetGroupMuteList(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("获取群禁言列表");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名：查询陌生人信息_詳細
+	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(長整數型, 目標QQ), structAddr(陌生人詳細信息結構體指針, 參考)
+	// 備註：失敗或無權限返回數量0
+	const char* GetStrangerInfoDetail(long long frameworkQQ, long long targetQQ, void* structAddr)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, long long, void*);
+		Orig func = (Orig)GetAPIFuncAddr("查询陌生人信息_详细");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, structAddr);
+	}
+	
 };
