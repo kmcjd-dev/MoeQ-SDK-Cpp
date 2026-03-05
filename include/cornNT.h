@@ -885,12 +885,12 @@ public:
 		return func(pluginkey.c_str(), frameworkQQ, groupID, title, content);
 	}
 
-	// 易語言原名：发送私聊圖片
+	// 易語言原名：发送私聊图片
 	// 參數：frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 對方QQ), imgPath(文本型, 圖片地址)
 	const char* SendPrivateImg(long long frameworkQQ, const char* targetQQ, const char* imgPath)
 	{
 		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
-		Orig func = (Orig)GetAPIFuncAddr("发送私聊圖片");
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊图片");
 		if (!func) return "";
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ, imgPath);
 	}
@@ -1018,4 +1018,161 @@ public:
 		return func(pluginkey.c_str(), frameworkQQ, targetQQ, structAddr);
 	}
 	
+
+	// 易語言原名:发送私聊JSON
+// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), jsonMsg(文本型, json消息)
+	const char* SendPrivateJson(long long frameworkQQ, const char* targetQQ, const char* jsonMsg)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊JSON");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, jsonMsg);
+	}
+
+	// 易語言原名:发送私聊合并转发消息
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), content(文本型, 消息内容)
+	// 備註:消息人QQ[=]消息人昵称[=]消息类型[=]数据内容
+	const char* SendPrivateForwardMsg(long long frameworkQQ, const char* targetQQ, const char* content)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊合并转发消息");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, content);
+	}
+
+	// 易語言原名:发送私聊回复
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), replyMsgID(文本型, 要回复的消息ID), content(文本型, 消息内容)
+	const char* SendPrivateReply(long long frameworkQQ, const char* targetQQ, const char* replyMsgID, const char* content)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊回复");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, replyMsgID, content);
+	}
+
+	// 易語言原名:发送私聊戳一戳
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ)
+	// 備註:隱藏接口
+	const char* SendPrivatePoke(long long frameworkQQ, const char* targetQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊戳一戳");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
+	}
+
+	// 易語言原名:发送私聊文件
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), filePath(文本型, 文件位置)
+	// 備註:隱藏接口
+	const char* SendPrivateFile(long long frameworkQQ, const char* targetQQ, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊文件");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, filePath);
+	}
+
+	// 易語言原名:发送私聊系统表情
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), emojiID(整數型, 表情ID)
+	// 備註:参考 https://bot.q.qq.com/wiki/develop/api-v2/openapi/emoji/model.html#EmojiType
+	const char* SendPrivateSysEmoji(long long frameworkQQ, const char* targetQQ, int emojiID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, int);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊系统表情");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, emojiID);
+	}
+
+	// 易語言原名:发送私聊自定义音乐卡片
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), musicID(文本型, 音乐ID), url(文本型, 跳转地址), audio(文本型, 音源地址), title(文本型, 标题), image(文本型, 封面)
+	const char* SendPrivateCustomMusicCard(long long frameworkQQ, const char* targetQQ, const char* musicID, const char* url, const char* audio, const char* title, const char* image)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*, const char*, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊自定义音乐卡片");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, musicID, url, audio, title, image);
+	}
+
+	// 易語言原名:发送私聊视频
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), filePath(文本型, 文件位置)
+	const char* SendPrivateVideo(long long frameworkQQ, const char* targetQQ, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊视频");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, filePath);
+	}
+
+	// 易語言原名:发送私聊语音
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), filePath(文本型, 文件位置)
+	const char* SendPrivateAudio(long long frameworkQQ, const char* targetQQ, const char* filePath)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊语音");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, filePath);
+	}
+
+	// 易語言原名:发送私聊超级表情_猜拳
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ)
+	// 備註:隱藏接口
+	const char* SendPrivateEmojiRPS(long long frameworkQQ, const char* targetQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊超级表情_猜拳");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
+	}
+
+	// 易語言原名:发送私聊超级表情_骰子
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ)
+	// 備註:隱藏接口
+	const char* SendPrivateEmojiDice(long long frameworkQQ, const char* targetQQ)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊超级表情_骰子");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ);
+	}
+
+	// 易語言原名:发送群打卡
+	// 參數:frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群号)
+	const char* SendGroupCheckIn(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送群打卡");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名:设置群打卡
+	// 參數:frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群号)
+	const char* SetGroupCheckIn(long long frameworkQQ, const char* groupID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("设置群打卡");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID);
+	}
+
+	// 易語言原名:获取AI语音
+	// 參數:frameworkQQ(長整數型, 框架QQ), groupID(文本型, 群号), character(文本型, AI的ID), textMsg(文本型, 文本消息)
+	// 備註:返回音頻下載地址
+	const char* GetAIVoice(long long frameworkQQ, const char* groupID, const char* character, const char* textMsg)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("获取AI语音");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, groupID, character, textMsg);
+	}
+
+	// 易語言原名:发送私聊音乐卡片
+	// 參數:frameworkQQ(長整數型, 框架QQ), targetQQ(文本型, 对方QQ), musicID(文本型, 音乐ID)
+	const char* SendPrivateMusicCard(long long frameworkQQ, const char* targetQQ, const char* musicID)
+	{
+		typedef const char* (__stdcall* Orig)(const char*, long long, const char*, const char*);
+		Orig func = (Orig)GetAPIFuncAddr("发送私聊音乐卡片");
+		if (!func) return "";
+		return func(pluginkey.c_str(), frameworkQQ, targetQQ, musicID);
+	}
 };
